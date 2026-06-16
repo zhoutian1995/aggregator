@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>爆款拆解 — WilleAI工具实验室</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .page-head{padding:40px 0 24px}
+  .page-head h1{font-size:32px;margin-bottom:6px}
+
+  .url-box{display:flex;gap:12px;margin-bottom:8px}
+  .url-box .input{height:50px;font-size:15px}
+  .examples{font-size:12px;color:var(--text-3);margin-bottom:36px;font-family:'Geist Mono',monospace}
+  .examples a{color:var(--gold-3);margin-right:14px;cursor:pointer}
+  .examples a:hover{color:var(--gold)}
+
+  /* 原文信息条 */
+  .source-bar{
+    display:flex;align-items:center;gap:20px;background:var(--bg-2);
+    border:1px solid var(--border);border-radius:var(--radius);padding:18px 24px;margin-bottom:28px;
+  }
+  .source-bar .thumb{width:64px;height:64px;border-radius:10px;background:linear-gradient(135deg,var(--gold-3),var(--bg-3));flex-shrink:0;display:flex;align-items:center;justify-content:center;color:var(--bg);font-weight:700}
+  .source-bar .info{flex:1}
+  .source-bar .info .t{font-size:15px;font-weight:500;margin-bottom:5px}
+  .source-bar .info .m{font-size:12px;color:var(--text-3);font-family:'Geist Mono',monospace}
+  .source-bar .stat{text-align:center;padding:0 14px;border-left:1px solid var(--border)}
+  .source-bar .stat:first-of-type{border-left:none}
+  .source-bar .stat .n{font-size:20px;font-weight:600;color:var(--gold)}
+  .source-bar .stat .l{font-size:11px;color:var(--text-3);margin-top:2px}
+
+  .sec-title{display:flex;align-items:center;gap:10px;margin:32px 0 16px}
+  .sec-title h2{font-size:18px}
+  .sec-title .ln{flex:1;height:1px;background:var(--border)}
+
+  .insight{padding:24px 26px}
+  .insight .hd{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+  .insight .hd .n{width:26px;height:26px;border-radius:7px;background:var(--glow-soft);border:1px solid var(--gold-3);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:13px;font-family:'Geist Mono',monospace;font-weight:600}
+  .insight h3{font-size:16px}
+  .insight p{font-size:14px;color:var(--text-2);line-height:1.7}
+  .insight .hl{color:var(--gold);background:var(--glow-soft);padding:1px 5px;border-radius:4px}
+  .insight ul{margin:8px 0 0 18px;font-size:14px;color:var(--text-2);line-height:1.8}
+
+  /* 情绪曲线 */
+  .curve-card{padding:24px 26px}
+  .curve-legend{display:flex;gap:18px;font-size:12px;color:var(--text-2);margin-top:14px;font-family:'Geist Mono',monospace}
+  .curve-legend span{display:flex;align-items:center;gap:6px}
+  .curve-legend i{width:10px;height:2px;background:var(--gold)}
+
+  .template-box{background:var(--bg-3);border:1px dashed var(--border-2);border-radius:9px;padding:16px 18px;font-family:'Geist Mono',monospace;font-size:13px;color:var(--text-2);line-height:1.8;margin-top:12px}
+  .template-box .v{color:var(--gold)}
+</style>
+</head>
+<body>
+
+<nav class="nav"><div class="wrap nav-inner">
+  <a href="index.html" class="brand"><svg viewBox="0 0 32 32" class="logo" fill="none"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F5C669"/><stop offset="1" stop-color="#D4882E"/></linearGradient></defs><path d="M16 3 L29 16 L16 16 Z" fill="url(#lg)"/><path d="M29 16 L16 29 L16 16 Z" fill="url(#lg)" opacity=".6"/><path d="M16 29 L3 16 L16 16 Z" fill="url(#lg)"/><path d="M3 16 L16 3 L16 16 Z" fill="url(#lg)" opacity=".6"/></svg> WilleAI <span class="sub">工具实验室</span></a>
+  <div class="nav-links"><a href="index.html">首页</a><a href="create.html">创作</a><a href="analyze.html" class="active">拆解</a><a href="video.html">视频</a><a href="publish.html">发布</a></div>
+  <div class="nav-right"><a href="#" class="btn btn-ghost">登录</a><a href="#" class="btn btn-gold">申请内测</a></div>
+</div></nav>
+
+<div class="wrap page-head">
+  <div class="label">// VIRAL ANALYSIS</div>
+  <h1>爆款拆解</h1>
+  <p class="muted" style="font-size:15px">粘贴一条链接，AI 拆解它为什么火</p>
+</div>
+
+<div class="wrap" style="padding-bottom:60px">
+  <!-- 链接输入 -->
+  <div class="url-box">
+    <input class="input" placeholder="粘贴抖音 / 小红书 / B站 / 公众号 内容链接..." value="https://www.xiaohongshu.com/explore/abc123爆款笔记">
+    <button class="btn btn-gold btn-lg" style="white-space:nowrap">拆解爆款</button>
+  </div>
+  <div class="examples">试试：<a>小红书种草爆款</a><a>抖音口播百万播放</a><a>B站知识区热门</a></div>
+
+  <!-- 原文信息 -->
+  <div class="source-bar">
+    <div class="thumb">爆</div>
+    <div class="info">
+      <div class="t">新手做小红书一个月涨粉1000的真实复盘（附模板）</div>
+      <div class="m">@运营小课堂 · 小红书 · 3天前发布</div>
+    </div>
+    <div class="stat"><div class="n">12.8w</div><div class="l">点赞</div></div>
+    <div class="stat"><div class="n">8600</div><div class="l">收藏</div></div>
+    <div class="stat"><div class="n">2340</div><div class="l">评论</div></div>
+    <div class="stat"><div class="n">98%</div><div class="l">好评率</div></div>
+  </div>
+
+  <!-- 拆解要素 -->
+  <div class="sec-title"><h2>爆款要素拆解</h2><div class="ln"></div><span class="tag tag-gold">5个关键点</span></div>
+  <div class="grid-2">
+    <div class="card insight">
+      <div class="hd"><div class="n">01</div><h3>钩子设计</h3></div>
+      <p>标题用<span class="hl">「数字+痛点+利益」</span>结构：「一个月涨粉1000」给具体预期，「真实复盘」建立信任。封面加红色箭头指向数字，视觉钩子强。</p>
+    </div>
+    <div class="card insight">
+      <div class="hd"><div class="n">02</div><h3>内容结构</h3></div>
+      <p>总分总结构：开头抛痛点 → 中间3个方法（编号清晰）→ 结尾送模板引流。每段控制在2行内，适合移动端快速浏览。</p>
+    </div>
+    <div class="card insight">
+      <div class="hd"><div class="n">03</div><h3>情绪曲线</h3></div>
+      <p>起手焦虑共鸣 → 中段获得感 → 结尾惊喜（送福利）。情绪起伏明显，完播率高。</p>
+    </div>
+    <div class="card insight">
+      <div class="hd"><div class="n">04</div><h3>数据证据</h3></div>
+      <p>用<span class="hl">真实截图</span>（粉丝增长曲线、后台数据）背书，比纯文字说服力强3倍。评论区主动回复前20条，推高互动权重。</p>
+    </div>
+  </div>
+
+  <!-- 情绪曲线图 -->
+  <div class="sec-title"><h2>情绪强度曲线</h2><div class="ln"></div></div>
+  <div class="card curve-card">
+    <svg viewBox="0 0 600 160" style="width:100%;height:140px">
+      <defs><linearGradient id="cg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E8A33D" stop-opacity=".4"/><stop offset="1" stop-color="#E8A33D" stop-opacity="0"/></linearGradient></defs>
+      <path d="M0 120 L80 130 L160 70 L240 85 L320 40 L400 60 L480 30 L560 110 L600 90 L600 160 L0 160 Z" fill="url(#cg)"/>
+      <path d="M0 120 L80 130 L160 70 L240 85 L320 40 L400 60 L480 30 L560 110 L600 90" fill="none" stroke="#E8A33D" stroke-width="2"/>
+      <g fill="#E8A33D"><circle cx="80" cy="130" r="3"/><circle cx="160" cy="70" r="3"/><circle cx="320" cy="40" r="3"/><circle cx="480" cy="30" r="4"/></g>
+    </svg>
+    <div class="curve-legend"><span><i></i>情绪强度</span><span style="color:var(--text-3)">峰值在"送模板"节点 → 引导收藏转化</span></div>
+  </div>
+
+  <!-- 可复用模板 -->
+  <div class="sec-title"><h2>可复用模板</h2><div class="ln"></div><button class="icon-btn" style="border:1px solid var(--border-2);background:var(--bg-3);color:var(--text-2);border-radius:7px;padding:6px 12px;font-size:12px;cursor:pointer">复制模板</button></div>
+  <div class="card insight">
+    <p>提取出的爆款公式，可直接用于你的下一篇：</p>
+    <div class="template-box">
+      <span class="v">[数字]</span>做<span class="v">[领域]</span>，<span class="v">[时间]</span>达成<span class="v">[结果]</span>的真实复盘（附<span class="v">[福利]</span>）<br>
+      → 开头：共鸣痛点 · 中段：3个编号方法 · 结尾：送资源引流
+    </div>
+  </div>
+</div>
+
+<footer><div class="wrap foot-inner">
+  <div class="brand" style="font-size:14px"><svg viewBox="0 0 32 32" class="logo" style="width:18px;height:18px" fill="#E8A33D"><path d="M16 3 L29 16 L16 16 Z"/><path d="M29 16 L16 29 L16 16 Z" opacity=".6"/><path d="M16 29 L3 16 L16 16 Z"/><path d="M3 16 L16 3 L16 16 Z" opacity=".6"/></svg> WilleAI <span class="sub">工具实验室</span></div>
+  <div class="mono">© 2026 · 爆款拆解</div>
+</div></footer>
+
+</body>
+</html>

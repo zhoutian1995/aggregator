@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>创作工作台 — WilleAI工具实验室</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .page-head{padding:40px 0 24px}
+  .page-head h1{font-size:32px;margin-bottom:6px}
+  .workbench{display:grid;grid-template-columns:360px 1fr;gap:24px;padding-bottom:60px;align-items:start}
+
+  /* 左控制面板 */
+  .panel{background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);padding:24px;position:sticky;top:88px}
+  .field{margin-bottom:22px}
+  .field label{display:block;font-size:13px;color:var(--text-2);margin-bottom:9px;font-weight:500}
+  textarea.input{resize:vertical;min-height:88px;line-height:1.5}
+
+  .plat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .plat{
+    border:1px solid var(--border-2);background:var(--bg-3);border-radius:9px;
+    padding:10px 6px;text-align:center;cursor:pointer;transition:var(--ease);
+    font-size:12px;color:var(--text-2);
+  }
+  .plat:hover{border-color:var(--gold-3)}
+  .plat.on{border-color:var(--gold);background:var(--glow-soft);color:var(--gold)}
+  .plat .chk{font-size:10px;margin-top:3px;font-family:'Geist Mono',monospace}
+
+  .seg{display:flex;gap:6px;flex-wrap:wrap}
+  .seg button{
+    border:1px solid var(--border-2);background:var(--bg-3);color:var(--text-2);
+    border-radius:8px;padding:7px 13px;font-size:13px;cursor:pointer;transition:var(--ease);font-family:inherit;
+  }
+  .seg button.on{border-color:var(--gold);background:var(--glow-soft);color:var(--gold)}
+  .range-row{display:flex;align-items:center;gap:12px}
+  .range-row input[type=range]{flex:1;accent-color:var(--gold)}
+  .range-val{font-family:'Geist Mono',monospace;font-size:13px;color:var(--gold);min-width:60px;text-align:right}
+
+  /* 右结果区 */
+  .results-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+  .results-head .count{font-size:13px;color:var(--text-2)}
+  .results-head .count b{color:var(--gold)}
+
+  .doc{
+    background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);
+    padding:24px 26px;margin-bottom:16px;transition:var(--ease);
+  }
+  .doc:hover{border-color:var(--border-2)}
+  .doc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+  .doc-plat{display:flex;align-items:center;gap:10px}
+  .doc-plat .badge{font-size:12px;color:var(--gold);border:1px solid var(--gold-3);background:var(--glow-soft);padding:3px 10px;border-radius:6px;font-weight:500}
+  .doc-plat .meta{font-size:12px;color:var(--text-3);font-family:'Geist Mono',monospace}
+  .doc-actions{display:flex;gap:8px}
+  .icon-btn{border:1px solid var(--border-2);background:var(--bg-3);color:var(--text-2);border-radius:7px;padding:6px 12px;font-size:12px;cursor:pointer;transition:var(--ease);font-family:inherit}
+  .icon-btn:hover{border-color:var(--gold);color:var(--gold)}
+  .doc h3{font-size:17px;margin-bottom:10px;line-height:1.4}
+  .doc p{font-size:14px;color:var(--text-2);line-height:1.7}
+  .doc .tags{display:flex;gap:6px;margin-top:14px;flex-wrap:wrap}
+
+  @media(max-width:900px){.workbench{grid-template-columns:1fr}.panel{position:static}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav"><div class="wrap nav-inner">
+  <a href="index.html" class="brand">
+    <svg viewBox="0 0 32 32" class="logo" fill="none"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F5C669"/><stop offset="1" stop-color="#D4882E"/></linearGradient></defs><path d="M16 3 L29 16 L16 16 Z" fill="url(#lg)"/><path d="M29 16 L16 29 L16 16 Z" fill="url(#lg)" opacity=".6"/><path d="M16 29 L3 16 L16 16 Z" fill="url(#lg)"/><path d="M3 16 L16 3 L16 16 Z" fill="url(#lg)" opacity=".6"/></svg>
+    WilleAI <span class="sub">工具实验室</span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html">首页</a>
+    <a href="create.html" class="active">创作</a>
+    <a href="analyze.html">拆解</a>
+    <a href="video.html">视频</a>
+    <a href="publish.html">发布</a>
+  </div>
+  <div class="nav-right"><a href="#" class="btn btn-ghost">登录</a><a href="#" class="btn btn-gold">申请内测</a></div>
+</div></nav>
+
+<!-- 页头 -->
+<div class="wrap page-head">
+  <div class="label">// CREATION WORKBENCH</div>
+  <h1>创作工作台</h1>
+  <p class="muted" style="font-size:15px">输入一个主题，一键生成各平台专属文案</p>
+</div>
+
+<!-- 工作台 -->
+<div class="wrap workbench">
+
+  <!-- 左：控制面板 -->
+  <aside class="panel">
+    <div class="field">
+      <label>创作主题</label>
+      <textarea class="input" placeholder="例如：如何用AI提升自媒体创作效率">新手做小红书，第一个月如何涨粉1000</textarea>
+    </div>
+
+    <div class="field">
+      <label>目标平台 <span class="faint">（多选）</span></label>
+      <div class="plat-grid">
+        <div class="plat on">小红书<span class="chk">✓</span></div>
+        <div class="plat on">抖音<span class="chk">✓</span></div>
+        <div class="plat">公众号<span class="chk"></span></div>
+        <div class="plat">知乎<span class="chk"></span></div>
+        <div class="plat">B站<span class="chk"></span></div>
+        <div class="plat">微博<span class="chk"></span></div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>语气风格</label>
+      <div class="seg">
+        <button>专业</button><button class="on">活泼种草</button><button>干货</button><button>故事</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>字数范围</label>
+      <div class="range-row">
+        <input type="range" min="50" max="1000" value="300">
+        <span class="range-val">~300字</span>
+      </div>
+    </div>
+
+    <button class="btn btn-gold" style="width:100%;justify-content:center;height:46px">生成文案 ✨</button>
+    <p class="faint" style="font-size:11px;text-align:center;margin-top:10px;font-family:'Geist Mono',monospace">预计耗时 8s · 消耗 0.3 积分</p>
+  </aside>
+
+  <!-- 右：结果区 -->
+  <section>
+    <div class="results-head">
+      <div class="count">已生成 <b>2</b> 篇文案 · 用时 7.2s</div>
+      <button class="icon-btn">全部复制</button>
+    </div>
+
+    <!-- 小红书 -->
+    <article class="doc">
+      <div class="doc-top">
+        <div class="doc-plat"><span class="badge">小红书</span><span class="meta">287字 · 种草风</span></div>
+        <div class="doc-actions"><button class="icon-btn">复制</button><button class="icon-btn">编辑</button></div>
+      </div>
+      <h3>新手做小红书，第一个月涨粉1000的保姆级攻略 🚀</h3>
+      <p>姐妹们！！做小红书第一个月就涨了1000粉，今天把方法全分享出来👇<br><br>1️⃣ 定位要窄：别想着什么都能发，选一个你能持续输出的细分领域<br>2️⃣ 标题钩子：用数字+情绪+痛点，比如"0基础3天起号"<br>3️⃣ 封面统一：形成视觉记忆点，刷到就知道是你...</p>
+      <div class="tags"><span class="tag">#小红书运营</span><span class="tag">#涨粉攻略</span><span class="tag">#新手起号</span></div>
+    </article>
+
+    <!-- 抖音 -->
+    <article class="doc">
+      <div class="doc-top">
+        <div class="doc-plat"><span class="badge">抖音</span><span class="meta">口播稿 · 45秒</span></div>
+        <div class="doc-actions"><button class="icon-btn">复制</button><button class="icon-btn">编辑</button></div>
+      </div>
+      <h3>（开场钩子）做小红书一个月涨1000粉？别划走，方法其实特简单。</h3>
+      <p>很多人起号失败，不是因为内容差，是因为没想清楚三件事。<br><br>第一，定位。别贪心，你就死磕一个细分方向，让算法知道该把你推给谁。<br>第二，标题。记住这个公式：数字+痛点+反转。<br>第三，坚持日更前两周，数据没起来也别停...</p>
+      <div class="tags"><span class="tag">#抖音口播</span><span class="tag">#自媒体干货</span></div>
+    </article>
+
+    <div style="text-align:center;padding:20px">
+      <button class="btn btn-ghost">加载更多平台文案</button>
+    </div>
+  </section>
+
+</div>
+
+<!-- FOOTER -->
+<footer><div class="wrap foot-inner">
+  <div class="brand" style="font-size:14px"><svg viewBox="0 0 32 32" class="logo" style="width:18px;height:18px" fill="#E8A33D"><path d="M16 3 L29 16 L16 16 Z"/><path d="M29 16 L16 29 L16 16 Z" opacity=".6"/><path d="M16 29 L3 16 L16 16 Z"/><path d="M3 16 L16 3 L16 16 Z" opacity=".6"/></svg> WilleAI <span class="sub">工具实验室</span></div>
+  <div class="mono">© 2026 · 创作工作台</div>
+</div></footer>
+
+<script>
+  // 平台勾选交互
+  document.querySelectorAll('.plat').forEach(p=>p.onclick=()=>p.classList.toggle('on'));
+  document.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>{
+    b.parentElement.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+  });
+</script>
+</body>
+</html>

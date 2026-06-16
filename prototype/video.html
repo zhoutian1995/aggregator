@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI视频重生成 — WilleAI工具实验室</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .page-head{padding:40px 0 24px}
+  .page-head h1{font-size:32px;margin-bottom:6px}
+  .workbench{display:grid;grid-template-columns:340px 1fr;gap:24px;padding-bottom:60px;align-items:start}
+  .panel{background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);padding:24px;position:sticky;top:88px}
+  .field{margin-bottom:22px}
+  .field label{display:block;font-size:13px;color:var(--text-2);margin-bottom:9px;font-weight:500}
+
+  .upload{
+    border:1.5px dashed var(--border-2);border-radius:10px;padding:28px 16px;text-align:center;
+    cursor:pointer;transition:var(--ease);background:var(--bg-3);
+  }
+  .upload:hover{border-color:var(--gold);background:var(--glow-soft)}
+  .upload .ico{width:36px;height:36px;margin:0 auto 10px;color:var(--gold)}
+  .upload .t{font-size:14px;color:var(--text);font-weight:500}
+  .upload .s{font-size:12px;color:var(--text-3);margin-top:4px}
+
+  .uploaded{display:flex;align-items:center;gap:12px;background:var(--bg-3);border:1px solid var(--border);border-radius:9px;padding:10px 12px;margin-top:10px}
+  .uploaded .thumb{width:48px;height:48px;border-radius:7px;background:linear-gradient(135deg,var(--gold-3),var(--bg-3));flex-shrink:0;position:relative}
+  .uploaded .thumb::after{content:'▶';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--bg);font-size:14px}
+  .uploaded .meta{flex:1;min-width:0}
+  .uploaded .meta .n{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .uploaded .meta .d{font-size:11px;color:var(--text-3);font-family:'Geist Mono',monospace;margin-top:2px}
+
+  .seg{display:flex;gap:6px;flex-wrap:wrap}
+  .seg button{border:1px solid var(--border-2);background:var(--bg-3);color:var(--text-2);border-radius:8px;padding:7px 12px;font-size:13px;cursor:pointer;transition:var(--ease);font-family:inherit}
+  .seg button.on{border-color:var(--gold);background:var(--glow-soft);color:var(--gold)}
+
+  /* 进度 */
+  .progress-card{margin-bottom:24px}
+  .progress-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+  .progress-top .t{font-size:14px;font-weight:500}
+  .progress-bar{height:6px;background:var(--bg-3);border-radius:999px;overflow:hidden}
+  .progress-bar i{display:block;height:100%;width:68%;background:linear-gradient(90deg,var(--gold-3),var(--gold-2));border-radius:999px}
+
+  /* 分镜时间线 */
+  .sec-title{display:flex;align-items:center;gap:10px;margin:0 0 16px}
+  .sec-title h2{font-size:18px}
+  .sec-title .ln{flex:1;height:1px;background:var(--border)}
+  .timeline{display:flex;gap:14px;overflow-x:auto;padding-bottom:8px}
+  .shot{flex:0 0 200px;background:var(--bg-2);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+  .shot .frame{height:110px;background:linear-gradient(135deg,#2a2218,#1a1510);position:relative;display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:24px}
+  .shot .frame .dur{position:absolute;bottom:6px;right:6px;background:rgba(0,0,0,.6);font-size:10px;padding:2px 6px;border-radius:4px;font-family:'Geist Mono',monospace;color:var(--text)}
+  .shot .body{padding:12px 14px}
+  .shot .body .n{font-size:11px;color:var(--gold-3);font-family:'Geist Mono',monospace;margin-bottom:5px}
+  .shot .body .d{font-size:12px;color:var(--text-2);line-height:1.5}
+
+  /* 成品预览 */
+  .preview-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:8px}
+  .pv{background:var(--bg-2);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center}
+  .pv .screen{background:linear-gradient(135deg,#2a2218,#15110d);border-radius:8px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;color:var(--gold);position:relative;border:1px solid var(--border)}
+  .pv.v916 .screen{width:90px;height:160px}
+  .pv.v169 .screen{width:150px;height:84px}
+  .pv.v11 .screen{width:110px;height:110px}
+  .pv .screen::after{content:'▶';font-size:20px}
+  .pv .lbl{font-size:12px;color:var(--text-2)}
+  .pv .sz{font-size:10px;color:var(--text-3);font-family:'Geist Mono',monospace;margin-top:2px}
+
+  @media(max-width:900px){.workbench{grid-template-columns:1fr}.panel{position:static}.preview-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav class="nav"><div class="wrap nav-inner">
+  <a href="index.html" class="brand"><svg viewBox="0 0 32 32" class="logo" fill="none"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F5C669"/><stop offset="1" stop-color="#D4882E"/></linearGradient></defs><path d="M16 3 L29 16 L16 16 Z" fill="url(#lg)"/><path d="M29 16 L16 29 L16 16 Z" fill="url(#lg)" opacity=".6"/><path d="M16 29 L3 16 L16 16 Z" fill="url(#lg)"/><path d="M3 16 L16 3 L16 16 Z" fill="url(#lg)" opacity=".6"/></svg> WilleAI <span class="sub">工具实验室</span></a>
+  <div class="nav-links"><a href="index.html">首页</a><a href="create.html">创作</a><a href="analyze.html">拆解</a><a href="video.html" class="active">视频</a><a href="publish.html">发布</a></div>
+  <div class="nav-right"><a href="#" class="btn btn-ghost">登录</a><a href="#" class="btn btn-gold">申请内测</a></div>
+</div></nav>
+
+<div class="wrap page-head">
+  <div class="label">// VIDEO REGENERATION</div>
+  <h1>AI 视频重生成</h1>
+  <p class="muted" style="font-size:15px">上传素材，按目标平台风格重新生成新视频</p>
+</div>
+
+<div class="wrap workbench">
+  <!-- 左：控制 -->
+  <aside class="panel">
+    <div class="field">
+      <label>原始素材</label>
+      <div class="upload">
+        <svg class="ico" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M18 24V8 M11 15l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 24v4a2 2 0 002 2h20a2 2 0 002-2v-4" stroke-linecap="round"/></svg>
+        <div class="t">拖拽视频到此处</div>
+        <div class="s">或点击上传 · MP4/MOV · 最大 500MB</div>
+      </div>
+      <div class="uploaded">
+        <div class="thumb"></div>
+        <div class="meta"><div class="n">咖啡探店原片.mp4</div><div class="d">00:42 · 38MB · 已上传</div></div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>目标平台尺寸</label>
+      <div class="seg"><button class="on">抖音 9:16</button><button>小红书 3:4</button><button>B站 16:9</button></div>
+    </div>
+    <div class="field">
+      <label>视频风格</label>
+      <div class="seg"><button>电影感</button><button class="on">活力快剪</button><button>治愈系</button><button>专业测评</button></div>
+    </div>
+    <div class="field">
+      <label>目标时长</label>
+      <div class="seg"><button>15s</button><button class="on">30s</button><button>60s</button></div>
+    </div>
+    <div class="field">
+      <label>生成引擎</label>
+      <div class="seg"><button class="on">Seedance 2.0</button><button>即梦</button></div>
+    </div>
+
+    <button class="btn btn-gold" style="width:100%;justify-content:center;height:46px">生成视频 ✨</button>
+    <p class="faint" style="font-size:11px;text-align:center;margin-top:10px;font-family:'Geist Mono',monospace">预计 3-5 分钟 · 消耗 12 积分</p>
+  </aside>
+
+  <!-- 右：进度+分镜+预览 -->
+  <section>
+    <!-- 进度 -->
+    <div class="card progress-card">
+      <div class="progress-top">
+        <div class="t">生成中 · 正在渲染第 4 个分镜</div>
+        <span class="mono" style="font-size:13px;color:var(--gold)">68%</span>
+      </div>
+      <div class="progress-bar"><i></i></div>
+    </div>
+
+    <!-- 分镜时间线 -->
+    <div class="sec-title"><h2>分镜脚本</h2><div class="ln"></div><span class="tag tag-gold">5 个分镜 · 30s</span></div>
+    <div class="timeline">
+      <div class="shot"><div class="frame">☕<span class="dur">0-5s</span></div><div class="body"><div class="n">SHOT 01</div><div class="d">特写：咖啡师手冲，热气升腾，暖光</div></div></div>
+      <div class="shot"><div class="frame">🏠<span class="dur">5-12s</span></div><div class="body"><div class="n">SHOT 02</div><div class="d">推门入店，环境全景，木质装修</div></div></div>
+      <div class="shot"><div class="frame">🍰<span class="dur">12-20s</span></div><div class="body"><div class="n">SHOT 03</div><div class="d">招牌甜品特写，慢动作切开</div></div></div>
+      <div class="shot"><div class="frame">😊<span class="dur">20-26s</span></div><div class="body"><div class="n">SHOT 04</div><div class="d">博主试吃反应，真实表情</div></div></div>
+      <div class="shot"><div class="frame">📍<span class="dur">26-30s</span></div><div class="body"><div class="n">SHOT 05</div><div class="d">地址信息卡 + 关注引导</div></div></div>
+    </div>
+
+    <!-- 成品预览 -->
+    <div class="sec-title" style="margin-top:28px"><h2>多尺寸成品</h2><div class="ln"></div><button class="icon-btn" style="border:1px solid var(--border-2);background:var(--bg-3);color:var(--text-2);border-radius:7px;padding:6px 12px;font-size:12px;cursor:pointer">全部下载</button></div>
+    <div class="preview-grid">
+      <div class="pv v916"><div class="screen"></div><div class="lbl">抖音 / 快手</div><div class="sz">1080×1920</div></div>
+      <div class="pv v169"><div class="screen"></div><div class="lbl">B站 / YouTube</div><div class="sz">1920×1080</div></div>
+      <div class="pv v11"><div class="screen"></div><div class="lbl">小红书封面</div><div class="sz">1080×1080</div></div>
+    </div>
+  </section>
+</div>
+
+<footer><div class="wrap foot-inner">
+  <div class="brand" style="font-size:14px"><svg viewBox="0 0 32 32" class="logo" style="width:18px;height:18px" fill="#E8A33D"><path d="M16 3 L29 16 L16 16 Z"/><path d="M29 16 L16 29 L16 16 Z" opacity=".6"/><path d="M16 29 L3 16 L16 16 Z"/><path d="M3 16 L16 3 L16 16 Z" opacity=".6"/></svg> WilleAI <span class="sub">工具实验室</span></div>
+  <div class="mono">© 2026 · AI视频重生成</div>
+</div></footer>
+
+<script>
+  document.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>{b.parentElement.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on')});
+</script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>发布中心 — WilleAI工具实验室</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .page-head{padding:40px 0 24px}
+  .page-head h1{font-size:32px;margin-bottom:6px}
+  .publish-layout{display:grid;grid-template-columns:1fr 360px;gap:24px;padding-bottom:60px;align-items:start}
+
+  /* 平台勾选网格 */
+  .plat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px}
+  .pcard{
+    background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);
+    padding:18px;cursor:pointer;transition:var(--ease);position:relative;
+  }
+  .pcard:hover{border-color:var(--border-2);background:var(--bg-3)}
+  .pcard.on{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold-3),0 0 24px -8px var(--glow)}
+  .pcard .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+  .pcard .pname{font-size:15px;font-weight:500;display:flex;align-items:center;gap:8px}
+  .pcard .pdot{width:10px;height:10px;border-radius:50%;background:var(--text-3)}
+  .pcard.on .pdot{background:var(--gold);box-shadow:0 0 8px var(--gold)}
+  .pcard .chk{width:20px;height:20px;border-radius:6px;border:1.5px solid var(--border-2);display:flex;align-items:center;justify-content:center;color:transparent;transition:var(--ease)}
+  .pcard.on .chk{background:var(--gold);border-color:var(--gold);color:var(--bg);font-size:13px;font-weight:700}
+  .pcard .stat{font-size:12px;color:var(--text-3);font-family:'Geist Mono',monospace}
+  .pcard.on .stat{color:var(--text-2)}
+
+  /* 内容预览 */
+  .sec-title{display:flex;align-items:center;gap:10px;margin:0 0 16px}
+  .sec-title h2{font-size:18px}
+  .sec-title .ln{flex:1;height:1px;background:var(--border)}
+
+  /* 右侧发布面板 */
+  .pbox{background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);padding:24px;position:sticky;top:88px}
+  .pbox .ph{font-size:14px;font-weight:500;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between}
+  .pbox .ph .cnt{color:var(--gold);font-family:'Geist Mono',monospace}
+  .opt-row{margin-bottom:18px}
+  .opt-row label{display:block;font-size:13px;color:var(--text-2);margin-bottom:9px}
+  .radio-grp{display:flex;gap:8px}
+  .radio-grp label{flex:1;border:1px solid var(--border-2);background:var(--bg-3);border-radius:9px;padding:11px;text-align:center;cursor:pointer;font-size:13px;color:var(--text-2);transition:var(--ease);margin:0}
+  .radio-grp input{display:none}
+  .radio-grp input:checked + label,.radio-grp label.on{border-color:var(--gold);background:var(--glow-soft);color:var(--gold)}
+
+  .summary{background:var(--bg-3);border-radius:9px;padding:14px 16px;margin:18px 0;font-size:13px;line-height:1.9}
+  .summary .row{display:flex;justify-content:space-between}
+  .summary .row span:first-child{color:var(--text-3)}
+  .summary .row span:last-child{color:var(--text);font-family:'Geist Mono',monospace}
+  .summary .row.tot span:last-child{color:var(--gold);font-weight:600}
+
+  /* 发布结果状态 */
+  .results{margin-top:28px}
+  .pstat{display:flex;align-items:center;gap:14px;padding:14px 18px;background:var(--bg-2);border:1px solid var(--border);border-radius:10px;margin-bottom:10px}
+  .pstat .ic{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+  .pstat.ok .ic{background:var(--glow-soft);color:var(--gold);border:1px solid var(--gold-3)}
+  .pstat.wait .ic{background:var(--bg-3);color:var(--text-2);border:1px solid var(--border-2)}
+  .pstat .info{flex:1}
+  .pstat .info .n{font-size:14px;font-weight:500}
+  .pstat .info .s{font-size:12px;color:var(--text-3);margin-top:2px;font-family:'Geist Mono',monospace}
+  .pstat.ok .info .s{color:var(--gold-3)}
+  .pstat .link{font-size:12px;color:var(--gold);cursor:pointer}
+
+  @media(max-width:900px){.publish-layout{grid-template-columns:1fr}.pbox{position:static}.plat-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+
+<nav class="nav"><div class="wrap nav-inner">
+  <a href="index.html" class="brand"><svg viewBox="0 0 32 32" class="logo" fill="none"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F5C669"/><stop offset="1" stop-color="#D4882E"/></linearGradient></defs><path d="M16 3 L29 16 L16 16 Z" fill="url(#lg)"/><path d="M29 16 L16 29 L16 16 Z" fill="url(#lg)" opacity=".6"/><path d="M16 29 L3 16 L16 16 Z" fill="url(#lg)"/><path d="M3 16 L16 3 L16 16 Z" fill="url(#lg)" opacity=".6"/></svg> WilleAI <span class="sub">工具实验室</span></a>
+  <div class="nav-links"><a href="index.html">首页</a><a href="create.html">创作</a><a href="analyze.html">拆解</a><a href="video.html">视频</a><a href="publish.html" class="active">发布</a></div>
+  <div class="nav-right"><a href="#" class="btn btn-ghost">登录</a><a href="#" class="btn btn-gold">申请内测</a></div>
+</div></nav>
+
+<div class="wrap page-head">
+  <div class="label">// PUBLISH CENTER</div>
+  <h1>一键多平台发布</h1>
+  <p class="muted" style="font-size:15px">勾选平台，一次创作分发到全网</p>
+</div>
+
+<div class="wrap publish-layout">
+  <!-- 左：平台选择 + 结果 -->
+  <section>
+    <div class="sec-title"><h2>选择发布平台</h2><div class="ln"></div><span class="tag">已绑定 6 个账号</span></div>
+
+    <div class="plat-grid">
+      <div class="pcard on"><div class="top"><div class="pname"><span class="pdot"></span>小红书</div><div class="chk">✓</div></div><div class="stat">@运营小课堂 · 已适配</div></div>
+      <div class="pcard on"><div class="top"><div class="pname"><span class="pdot"></span>抖音</div><div class="chk">✓</div></div><div class="stat">@运营小课堂 · 已适配</div></div>
+      <div class="pcard on"><div class="top"><div class="pname"><span class="pdot"></span>公众号</div><div class="chk">✓</div></div><div class="stat">运营小课堂 · 已适配</div></div>
+      <div class="pcard"><div class="top"><div class="pname"><span class="pdot"></span>知乎</div><div class="chk">✓</div></div><div class="stat">未绑定专栏</div></div>
+      <div class="pcard"><div class="top"><div class="pname"><span class="pdot"></span>B站</div><div class="chk">✓</div></div><div class="stat">未绑定账号</div></div>
+      <div class="pcard"><div class="top"><div class="pname"><span class="pdot"></span>微博</div><div class="chk">✓</div></div><div class="stat">@运营小课堂</div></div>
+    </div>
+
+    <!-- 发布结果 -->
+    <div class="sec-title"><h2>发布状态</h2><div class="ln"></div><span class="tag tag-gold">3/3 成功</span></div>
+    <div class="results">
+      <div class="pstat ok"><div class="ic">✓</div><div class="info"><div class="n">小红书</div><div class="s">已发布 · 阅读 2,340 · 点赞 128</div></div><div class="link">查看 →</div></div>
+      <div class="pstat ok"><div class="ic">✓</div><div class="info"><div class="n">抖音</div><div class="s">已发布 · 播放 5,670 · 点赞 312</div></div><div class="link">查看 →</div></div>
+      <div class="pstat ok"><div class="ic">✓</div><div class="info"><div class="n">公众号</div><div class="s">已发布 · 阅读 890 · 在看 45</div></div><div class="link">查看 →</div></div>
+    </div>
+  </section>
+
+  <!-- 右：发布设置 -->
+  <aside class="pbox">
+    <div class="ph">发布设置 <span class="cnt">3 个平台</span></div>
+
+    <div class="opt-row">
+      <label>发布方式</label>
+      <div class="radio-grp">
+        <label class="on">立即发布</label><label>定时发布</label>
+      </div>
+    </div>
+
+    <div class="opt-row">
+      <label>定时时间</label>
+      <input class="input" type="text" value="2026-06-16 20:00" disabled>
+    </div>
+
+    <div class="opt-row">
+      <label>发布账号</label>
+      <div class="radio-grp">
+        <label class="on">主账号</label><label>矩阵分发</label>
+      </div>
+    </div>
+
+    <div class="summary">
+      <div class="row"><span>图文内容</span><span>1 篇</span></div>
+      <div class="row"><span>视频内容</span><span>1 支</span></div>
+      <div class="row"><span>预计触达</span><span>~12,000</span></div>
+      <div class="row tot"><span>本次消耗</span><span>3 积分</span></div>
+    </div>
+
+    <button class="btn btn-gold" style="width:100%;justify-content:center;height:48px">一键发布到 3 个平台 →</button>
+    <p class="faint" style="font-size:11px;text-align:center;margin-top:10px;font-family:'Geist Mono',monospace">预计 30s 内完成全部分发</p>
+  </aside>
+</div>
+
+<footer><div class="wrap foot-inner">
+  <div class="brand" style="font-size:14px"><svg viewBox="0 0 32 32" class="logo" style="width:18px;height:18px" fill="#E8A33D"><path d="M16 3 L29 16 L16 16 Z"/><path d="M29 16 L16 29 L16 16 Z" opacity=".6"/><path d="M16 29 L3 16 L16 16 Z"/><path d="M3 16 L16 3 L16 16 Z" opacity=".6"/></svg> WilleAI <span class="sub">工具实验室</span></div>
+  <div class="mono">© 2026 · 发布中心</div>
+</div></footer>
+
+<script>
+  document.querySelectorAll('.pcard').forEach(c=>c.onclick=()=>c.classList.toggle('on'));
+  document.querySelectorAll('.radio-grp label').forEach(l=>l.onclick=()=>{l.parentElement.querySelectorAll('label').forEach(x=>x.classList.remove('on'));l.classList.add('on')});
+</script>
+</body>
+</html>

@@ -1,0 +1,153 @@
+/* ============================================================
+   WilleAI工具实验室 · 暖夜琥珀设计系统
+   Amber-on-WarmBlack · 共享样式
+   ============================================================ */
+
+:root{
+  /* 暖夜底色 */
+  --bg:        #161210;
+  --bg-2:      #1F1A16;
+  --bg-3:      #241E18;
+  --bg-nav:    rgba(22,18,16,.72);
+  --border:    #2E2820;
+  --border-2:  #3A3128;
+
+  /* 琥珀金 */
+  --gold:      #E8A33D;
+  --gold-2:    #F5C669;
+  --gold-3:    #D4882E;
+  --glow:      rgba(232,163,61,.25);
+  --glow-soft: rgba(232,163,61,.10);
+
+  /* 文字 */
+  --text:      #F5EDE3;
+  --text-2:    #A89B8E;
+  --text-3:    #6B6056;
+
+  --radius:   12px;
+  --maxw:     1120px;
+  --ease:     .18s cubic-bezier(.4,0,.2,1);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Geist',-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  letter-spacing:-0.01em;
+  line-height:1.5;
+  /* 暖光氛围 */
+  background-image:
+    radial-gradient(1200px 600px at 50% -10%, rgba(232,163,61,.06), transparent 60%),
+    radial-gradient(800px 400px at 100% 0%, rgba(212,136,46,.04), transparent 50%);
+  background-attachment:fixed;
+}
+a{color:inherit;text-decoration:none}
+.mono{font-family:'Geist Mono','SF Mono',monospace}
+
+/* ---------- 容器 ---------- */
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+
+/* ---------- Nav ---------- */
+.nav{
+  position:sticky;top:0;z-index:50;
+  backdrop-filter:saturate(180%) blur(14px);
+  background:var(--bg-nav);
+  border-bottom:1px solid var(--border);
+}
+.nav-inner{height:64px;display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:15px;letter-spacing:-0.02em}
+.brand .logo{width:24px;height:24px;filter:drop-shadow(0 0 8px var(--glow))}
+.brand .sub{font-size:11px;color:var(--text-3);font-weight:400;letter-spacing:.05em;margin-left:2px}
+.nav-links{display:flex;gap:4px}
+.nav-links a{
+  font-size:14px;color:var(--text-2);padding:7px 13px;border-radius:8px;
+  transition:var(--ease);font-weight:450;
+}
+.nav-links a:hover{color:var(--text);background:var(--bg-3)}
+.nav-links a.active{color:var(--gold);background:var(--glow-soft)}
+.nav-right{display:flex;align-items:center;gap:16px}
+
+/* ---------- Button ---------- */
+.btn{
+  display:inline-flex;align-items:center;gap:7px;
+  height:38px;padding:0 18px;border-radius:9px;
+  font-size:14px;font-weight:500;cursor:pointer;
+  transition:var(--ease);border:1px solid transparent;
+  font-family:inherit;white-space:nowrap;
+}
+.btn-gold{
+  background:linear-gradient(180deg,var(--gold-2),var(--gold));
+  color:#1a1208;box-shadow:0 0 0 1px var(--gold-3),0 8px 24px -8px var(--glow);
+}
+.btn-gold:hover{transform:translateY(-1px);box-shadow:0 0 0 1px var(--gold-2),0 12px 28px -8px var(--glow)}
+.btn-ghost{color:var(--text-2);border:1px solid var(--border-2)}
+.btn-ghost:hover{color:var(--text);border-color:var(--gold);background:var(--glow-soft)}
+.btn-lg{height:46px;padding:0 24px;font-size:15px;border-radius:10px}
+
+/* ---------- Card ---------- */
+.card{
+  background:var(--bg-2);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:32px;
+  transition:var(--ease);
+}
+.card-hover:hover{
+  border-color:var(--border-2);
+  background:var(--bg-3);
+  box-shadow:0 0 0 1px var(--glow-soft),0 20px 40px -20px rgba(0,0,0,.5);
+}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+
+/* ---------- Badge / Tag ---------- */
+.tag{
+  display:inline-flex;align-items:center;font-size:12px;
+  color:var(--text-2);padding:4px 11px;border:1px solid var(--border-2);
+  border-radius:999px;font-family:'Geist Mono',monospace;
+}
+.tag-gold{color:var(--gold);border-color:var(--gold-3);background:var(--glow-soft)}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:13px;color:var(--gold);font-weight:500;
+  padding:6px 14px;border:1px solid var(--gold-3);border-radius:999px;
+  background:var(--glow-soft);
+}
+.eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px var(--gold)}
+
+/* ---------- 排版 ---------- */
+h1{font-size:clamp(40px,7vw,76px);line-height:1.02;font-weight:600;letter-spacing:-0.045em}
+h2{font-size:clamp(28px,4vw,44px);font-weight:600;letter-spacing:-0.035em;line-height:1.1}
+h3{font-size:20px;font-weight:600;letter-spacing:-0.025em}
+.accent{color:var(--gold)}
+.faint{color:var(--text-3)}
+.muted{color:var(--text-2)}
+.label{font-size:13px;color:var(--text-3);font-family:'Geist Mono',monospace}
+.k{font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;font-family:'Geist Mono',monospace}
+
+/* ---------- Input ---------- */
+.input{
+  width:100%;background:var(--bg-3);border:1px solid var(--border-2);
+  border-radius:10px;padding:13px 16px;color:var(--text);font-size:14px;
+  font-family:inherit;transition:var(--ease);
+}
+.input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px var(--glow-soft)}
+.input::placeholder{color:var(--text-3)}
+
+/* ---------- 页脚 ---------- */
+footer{border-top:1px solid var(--border);margin-top:80px}
+.foot-inner{height:72px;display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--text-3)}
+
+/* ---------- 工具：section head ---------- */
+.section-head{text-align:center;margin-bottom:56px}
+.section-head .label{margin-bottom:14px}
+
+/* ---------- 响应式 ---------- */
+@media(max-width:760px){
+  .nav-links{display:none}
+  .grid-2,.grid-4{grid-template-columns:1fr}
+}
