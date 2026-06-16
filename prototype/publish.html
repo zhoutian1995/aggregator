@@ -134,7 +134,7 @@
       <div class="row tot"><span>本次消耗</span><span>3 积分</span></div>
     </div>
 
-    <button class="btn btn-gold" style="width:100%;justify-content:center;height:48px">一键发布到 3 个平台 →</button>
+    <button class="btn btn-gold" id="pubBtn" style="width:100%;justify-content:center;height:48px">一键发布到 3 个平台 →</button>
     <p class="faint" style="font-size:11px;text-align:center;margin-top:10px;font-family:'Geist Mono',monospace">预计 30s 内完成全部分发</p>
   </aside>
 </div>
@@ -144,9 +144,30 @@
   <div class="mono">© 2026 · 发布中心</div>
 </div></footer>
 
+<script src="assets/demo.js"></script>
 <script>
   document.querySelectorAll('.pcard').forEach(c=>c.onclick=()=>c.classList.toggle('on'));
   document.querySelectorAll('.radio-grp label').forEach(l=>l.onclick=()=>{l.parentElement.querySelectorAll('label').forEach(x=>x.classList.remove('on'));l.classList.add('on')});
+  const pubBtn=document.getElementById('pubBtn');
+  pubBtn.addEventListener('click',()=>{
+    Demo.btnLoading(pubBtn,'发布中…');
+    const stats=document.querySelectorAll('.pstat');
+    stats.forEach(s=>{s.classList.remove('ok');s.classList.add('wait');s.querySelector('.ic').textContent='·';s.querySelector('.info .s').textContent='发布中…';s.querySelector('.link').textContent=''});
+    stats.forEach((s,i)=>{
+      setTimeout(()=>{
+        s.classList.remove('wait');s.classList.add('ok');
+        s.querySelector('.ic').textContent='✓';
+        const name=s.querySelector('.info .n').textContent;
+        const data={'小红书':'已发布 · 阅读 2,340 · 点赞 128','抖音':'已发布 · 播放 5,670 · 点赞 312','公众号':'已发布 · 阅读 890 · 在看 45'}[name]||'已发布';
+        s.querySelector('.info .s').textContent=data;
+        s.querySelector('.link').textContent='查看 →';
+        if(i===stats.length-1){
+          Demo.btnDone(pubBtn,'已发布 ✓');
+          Demo.toast('3 个平台全部发布成功');
+        }
+      },800+i*900);
+    });
+  });
 </script>
 </body>
 </html>

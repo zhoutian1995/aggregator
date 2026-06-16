@@ -88,10 +88,10 @@
       <span class="url">willeai.cn / dashboard</span>
     </div>
     <div class="preview-body">
-      <div class="pv-cell"><div class="k">本月产出</div><div class="v">1,284</div><div class="d">篇多平台文案</div></div>
-      <div class="pv-cell"><div class="k">拆解爆款</div><div class="v">312</div><div class="d">条爆款逻辑</div></div>
-      <div class="pv-cell"><div class="k">视频生成</div><div class="v">96</div><div class="d">支重创视频</div></div>
-      <div class="pv-cell"><div class="k">分发触达</div><div class="v">5</div><div class="d">平台一键发布</div></div>
+      <div class="pv-cell"><div class="k">本月产出</div><div class="v" data-to="1284">0</div><div class="d">篇多平台文案</div></div>
+      <div class="pv-cell"><div class="k">拆解爆款</div><div class="v" data-to="312">0</div><div class="d">条爆款逻辑</div></div>
+      <div class="pv-cell"><div class="k">视频生成</div><div class="v" data-to="96">0</div><div class="d">支重创视频</div></div>
+      <div class="pv-cell"><div class="k">分发触达</div><div class="v" data-to="5" data-suffix="">0</div><div class="d">平台一键发布</div></div>
     </div>
   </div>
 </section>
@@ -166,5 +166,19 @@
   </div>
 </footer>
 
+<script src="assets/demo.js"></script>
+<script>
+  // 首屏数据 count-up（进入视口时触发）
+  const cells=document.querySelectorAll('.pv-cell .v[data-to]');
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        Demo.countUp(e.target,parseInt(e.target.dataset.to));
+        io.unobserve(e.target);
+      }
+    });
+  },{threshold:.4});
+  cells.forEach(c=>io.observe(c));
+</script>
 </body>
 </html>

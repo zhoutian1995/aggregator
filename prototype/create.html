@@ -125,7 +125,7 @@
       </div>
     </div>
 
-    <button class="btn btn-gold" style="width:100%;justify-content:center;height:46px">生成文案 ✨</button>
+    <button class="btn btn-gold" id="genBtn" style="width:100%;justify-content:center;height:46px">生成文案 ✨</button>
     <p class="faint" style="font-size:11px;text-align:center;margin-top:10px;font-family:'Geist Mono',monospace">预计耗时 8s · 消耗 0.3 积分</p>
   </aside>
 
@@ -171,11 +171,23 @@
   <div class="mono">© 2026 · 创作工作台</div>
 </div></footer>
 
+<script src="assets/demo.js"></script>
 <script>
   // 平台勾选交互
   document.querySelectorAll('.plat').forEach(p=>p.onclick=()=>p.classList.toggle('on'));
   document.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>{
     b.parentElement.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+  });
+  // 生成文案演示交互
+  const genBtn=document.getElementById('genBtn');
+  genBtn.addEventListener('click',()=>{
+    Demo.btnLoading(genBtn,'AI 生成中…');
+    document.querySelectorAll('.doc').forEach(d=>d.classList.add('demo-hidden'));
+    setTimeout(()=>{
+      Demo.staggerFadeIn('.doc',450);
+      Demo.btnDone(genBtn,'重新生成 ✨');
+      Demo.toast('已生成 2 篇多平台文案');
+    },1400);
   });
 </script>
 </body>

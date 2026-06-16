@@ -116,7 +116,7 @@
       <div class="seg"><button class="on">Seedance 2.0</button><button>即梦</button></div>
     </div>
 
-    <button class="btn btn-gold" style="width:100%;justify-content:center;height:46px">生成视频 ✨</button>
+    <button class="btn btn-gold" id="vidBtn" style="width:100%;justify-content:center;height:46px">生成视频 ✨</button>
     <p class="faint" style="font-size:11px;text-align:center;margin-top:10px;font-family:'Geist Mono',monospace">预计 3-5 分钟 · 消耗 12 积分</p>
   </aside>
 
@@ -125,10 +125,10 @@
     <!-- 进度 -->
     <div class="card progress-card">
       <div class="progress-top">
-        <div class="t">生成中 · 正在渲染第 4 个分镜</div>
-        <span class="mono" style="font-size:13px;color:var(--gold)">68%</span>
+        <div class="t" id="vidStatus">等待生成</div>
+        <span class="mono" id="vidPct" style="font-size:13px;color:var(--gold)">0%</span>
       </div>
-      <div class="progress-bar"><i></i></div>
+      <div class="progress-bar"><i id="vidBar" style="width:0%"></i></div>
     </div>
 
     <!-- 分镜时间线 -->
@@ -156,8 +156,25 @@
   <div class="mono">© 2026 · AI视频重生成</div>
 </div></footer>
 
+<script src="assets/demo.js"></script>
 <script>
   document.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>{b.parentElement.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on')});
+  const vidBtn=document.getElementById('vidBtn');
+  const vidStatus=document.getElementById('vidStatus');
+  const shots=document.querySelectorAll('.shot');
+  vidBtn.addEventListener('click',()=>{
+    Demo.btnLoading(vidBtn,'渲染中…');
+    shots.forEach(s=>{s.style.opacity='.35';s.style.filter='grayscale(.6)'});
+    document.getElementById('vidBar').style.width='0%';
+    // 进度条 0→100
+    Demo.progressTo(document.getElementById('vidBar'),document.getElementById('vidPct'),100,4000,()=>{
+      vidStatus.textContent='生成完成 · 5 个分镜';
+      Demo.btnDone(vidBtn,'重新生成 ✨');
+      Demo.toast('视频生成完成 · 已产出 3 个尺寸');
+    });
+    // 分镜逐个点亮
+    shots.forEach((s,i)=>setTimeout(()=>{s.style.opacity='1';s.style.filter='none';s.style.transition='.4s';vidStatus.textContent=`渲染中 · 第 ${i+1} 个分镜`},600+i*700));
+  });
 </script>
 </body>
 </html>

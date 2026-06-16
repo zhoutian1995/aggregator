@@ -72,7 +72,7 @@
   <!-- 链接输入 -->
   <div class="url-box">
     <input class="input" placeholder="粘贴抖音 / 小红书 / B站 / 公众号 内容链接..." value="https://www.xiaohongshu.com/explore/abc123爆款笔记">
-    <button class="btn btn-gold btn-lg" style="white-space:nowrap">拆解爆款</button>
+    <button class="btn btn-gold btn-lg" id="anaBtn" style="white-space:nowrap">拆解爆款</button>
   </div>
   <div class="examples">试试：<a>小红书种草爆款</a><a>抖音口播百万播放</a><a>B站知识区热门</a></div>
 
@@ -137,6 +137,24 @@
   <div class="brand" style="font-size:14px"><svg viewBox="0 0 32 32" class="logo" style="width:18px;height:18px" fill="#E8A33D"><path d="M16 3 L29 16 L16 16 Z"/><path d="M29 16 L16 29 L16 16 Z" opacity=".6"/><path d="M16 29 L3 16 L16 16 Z"/><path d="M3 16 L16 3 L16 16 Z" opacity=".6"/></svg> WilleAI <span class="sub">工具实验室</span></div>
   <div class="mono">© 2026 · 爆款拆解</div>
 </div></footer>
+
+<script src="assets/demo.js"></script>
+<script>
+  const anaBtn=document.getElementById('anaBtn');
+  anaBtn.addEventListener('click',()=>{
+    Demo.btnLoading(anaBtn,'AI 拆解中…');
+    // 隐藏拆解结果区
+    ['.insight','.curve-card','.template-box'].forEach(s=>document.querySelectorAll(s).forEach(e=>e.classList.add('demo-hidden')));
+    setTimeout(()=>{
+      // 要素卡片依次淡入
+      Demo.staggerFadeIn('.insight',350);
+      // 曲线 & 模板随后出现
+      setTimeout(()=>{Demo.staggerFadeIn('.curve-card',300);Demo.staggerFadeIn('.template-box',300)},1500);
+      Demo.btnDone(anaBtn,'重新拆解 ✨');
+      Demo.toast('拆解完成 · 识别 5 个爆款要素');
+    },1500);
+  });
+</script>
 
 </body>
 </html>
