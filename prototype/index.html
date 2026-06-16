@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<!--
+  aggregator · 首屏 Landing 高保真原型 (Junior pass)
+  ============================================================
+  ASSUMPTIONS（先说假设，等你确认再迭代）：
+  1. 产品名暂用 "aggregator"，Logo 用四瓣风车几何（四向汇聚=聚合）
+  2. 风格锁定 Vercel 黑白极简：#000/#FFF/灰阶、Geist 字体、大留白、1px线、负字距、无渐变无emoji
+  3. CTA 走"申请内测"（高端产品调性）+ "观看演示"次按钮
+  4. 价值主张文案为初稿，待你定稿（见 H1/sub）
+  5. 平台图标用黑白几何 SVG，不用 emoji（反 AI slop）
+  6. 首屏只做：Nav + Hero + 四功能卡片，后续页（拆解/创作/发布工作台）确认风格后再做
+  ============================================================
+-->
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>aggregator — 自媒体创作者聚合平台</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#fff; --fg:#000; --muted:#666; --faint:#a1a1a1;
+    --line:#eaeaea; --line2:#f0f0f0; --hover:#fafafa;
+    --ink:#0a0a0a;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Geist',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    background:var(--bg); color:var(--fg);
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+    font-feature-settings:"ss01","cv11";
+    letter-spacing:-0.01em;
+  }
+  a{color:inherit;text-decoration:none}
+  .mono{font-family:'Geist Mono',monospace}
+
+  /* ---------- Nav ---------- */
+  nav{
+    position:sticky; top:0; z-index:50;
+    backdrop-filter:saturate(180%) blur(12px);
+    background:rgba(255,255,255,0.72);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    max-width:1120px; margin:0 auto; height:64px;
+    padding:0 24px; display:flex; align-items:center; justify-content:space-between;
+  }
+  .brand{display:flex;align-items:center;gap:9px;font-weight:600;font-size:16px;letter-spacing:-0.02em}
+  .brand svg{width:22px;height:22px}
+  .nav-links{display:flex;gap:32px;font-size:14px;color:var(--muted)}
+  .nav-links a:hover{color:var(--fg)}
+  .nav-right{display:flex;align-items:center;gap:20px;font-size:14px}
+  .btn{
+    display:inline-flex;align-items:center;gap:6px;
+    height:36px; padding:0 16px; border-radius:8px;
+    font-size:14px; font-weight:500; cursor:pointer;
+    transition:all .15s ease; border:1px solid transparent;
+  }
+  .btn-dark{background:var(--fg);color:#fff}
+  .btn-dark:hover{background:#222;transform:translateY(-1px)}
+  .btn-ghost{color:var(--muted)}
+  .btn-ghost:hover{color:var(--fg)}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    max-width:1120px; margin:0 auto; padding:96px 24px 80px;
+    text-align:center; position:relative;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:13px; color:var(--muted); font-weight:500;
+    padding:6px 14px; border:1px solid var(--line); border-radius:999px;
+    margin-bottom:32px;
+    background:var(--hover);
+  }
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--fg)}
+  h1{
+    font-size:clamp(40px,7vw,76px); line-height:1.02; font-weight:600;
+    letter-spacing:-0.045em; margin-bottom:24px;
+  }
+  h1 .accent{color:var(--faint); font-weight:300}
+  .sub{
+    font-size:19px; line-height:1.55; color:var(--muted);
+    max-width:580px; margin:0 auto 40px; font-weight:400;
+  }
+  .sub b{color:var(--fg);font-weight:500}
+  .cta-row{display:flex;gap:12px;justify-content:center;align-items:center}
+  .btn-lg{height:44px;padding:0 22px;font-size:15px;border-radius:9px}
+
+  /* 产品预览框（克制线框，不编造截图） */
+  .preview{
+    max-width:980px; margin:72px auto 0;
+    border:1px solid var(--line); border-radius:14px; overflow:hidden;
+    background:var(--hover); box-shadow:0 1px 2px rgba(0,0,0,.03);
+  }
+  .preview-bar{
+    height:38px; border-bottom:1px solid var(--line);
+    display:flex; align-items:center; gap:7px; padding:0 14px;
+  }
+  .preview-bar i{width:11px;height:11px;border-radius:50%;border:1px solid var(--line2);background:#fff}
+  .preview-bar .url{
+    margin-left:14px; font-size:12px; color:var(--faint);
+    font-family:'Geist Mono',monospace;
+  }
+  .preview-body{
+    padding:48px 56px; display:grid; grid-template-columns:repeat(4,1fr); gap:1px;
+    background:var(--line);
+  }
+  .preview-cell{background:#fff;padding:28px 22px;text-align:left}
+  .preview-cell .k{font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.06em;font-family:'Geist Mono',monospace;margin-bottom:10px}
+  .preview-cell .v{font-size:26px;font-weight:600;letter-spacing:-0.03em}
+  .preview-cell .d{font-size:12px;color:var(--muted);margin-top:6px}
+
+  /* ---------- Features ---------- */
+  .features{max-width:1120px;margin:0 auto;padding:40px 24px 120px}
+  .section-head{text-align:center;margin-bottom:64px}
+  .section-head .label{font-size:13px;color:var(--faint);font-family:'Geist Mono',monospace;margin-bottom:14px}
+  .section-head h2{font-size:clamp(28px,4vw,44px);font-weight:600;letter-spacing:-0.035em;line-height:1.1}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .card{background:#fff;padding:40px;transition:background .2s ease;cursor:pointer}
+  .card:hover{background:var(--hover)}
+  .card-ico{width:40px;height:40px;margin-bottom:24px;color:var(--fg)}
+  .card .num{font-size:12px;font-family:'Geist Mono',monospace;color:var(--faint);margin-bottom:8px}
+  .card h3{font-size:21px;font-weight:600;letter-spacing:-0.025em;margin-bottom:10px}
+  .card p{font-size:15px;line-height:1.55;color:var(--muted);max-width:42ch}
+  .card .platforms{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap}
+  .tag{font-size:12px;color:var(--muted);padding:4px 10px;border:1px solid var(--line);border-radius:999px;font-family:'Geist Mono',monospace}
+
+  /* ---------- Footer ---------- */
+  footer{border-top:1px solid var(--line)}
+  .foot-inner{max-width:1120px;margin:0 auto;padding:32px 24px;display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--faint)}
+  .foot-inner .mono{font-family:'Geist Mono',monospace}
+
+  /* 响应式 */
+  @media(max-width:760px){
+    .nav-links{display:none}
+    .preview-body{grid-template-columns:repeat(2,1fr);padding:24px}
+    .grid{grid-template-columns:1fr}
+    .cta-row{flex-direction:column}
+  }
+</style>
+</head>
+<body>
+
+<!-- ========== NAV ========== -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="brand">
+      <!-- 四瓣风车 Logo：四向汇聚 = 聚合 -->
+      <svg viewBox="0 0 32 32" fill="none">
+        <path d="M16 3 L29 16 L16 16 Z" fill="currentColor"/>
+        <path d="M29 16 L16 29 L16 16 Z" fill="currentColor" opacity=".55"/>
+        <path d="M16 29 L3 16 L16 16 Z" fill="currentColor"/>
+        <path d="M3 16 L16 3 L16 16 Z" fill="currentColor" opacity=".55"/>
+      </svg>
+      aggregator
+    </a>
+    <div class="nav-links">
+      <a href="#features">功能</a>
+      <a href="#">工作流</a>
+      <a href="#">定价</a>
+      <a href="#">文档</a>
+    </div>
+    <div class="nav-right">
+      <a href="#" class="btn-ghost btn">登录</a>
+      <a href="#" class="btn btn-dark">申请内测</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ========== HERO ========== -->
+<section class="hero">
+  <span class="eyebrow"><span class="dot"></span> 自媒体创作者聚合平台</span>
+  <h1>一个平台，<br><span class="accent">搞定全平台内容创作</span></h1>
+  <p class="sub">
+    <b>文案创作</b> · <b>爆款拆解</b> · <b>AI视频重生成</b> · <b>一键发布</b>。<br>
+    为高端创作者打造的一站式工作台。
+  </p>
+  <div class="cta-row">
+    <a href="#" class="btn btn-dark btn-lg">申请内测 →</a>
+    <a href="#" class="btn-ghost btn btn-lg">观看演示</a>
+  </div>
+
+  <!-- 克制的产品预览：线框 + 占位指标，不编造 UI 截图 -->
+  <div class="preview">
+    <div class="preview-bar">
+      <i></i><i></i><i></i>
+      <span class="url">app.aggregator.cn / dashboard</span>
+    </div>
+    <div class="preview-body">
+      <div class="preview-cell">
+        <div class="k">本月产出</div><div class="v">1,284</div><div class="d">篇多平台文案</div>
+      </div>
+      <div class="preview-cell">
+        <div class="k">拆解爆款</div><div class="v">312</div><div class="d">条爆款逻辑</div>
+      </div>
+      <div class="preview-cell">
+        <div class="k">视频生成</div><div class="v">96</div><div class="d">支重创视频</div>
+      </div>
+      <div class="preview-cell">
+        <div class="k">分发触达</div><div class="v">5</div><div class="d">平台一键发布</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FEATURES ========== -->
+<section class="features" id="features">
+  <div class="section-head">
+    <div class="label">// CORE CAPABILITIES</div>
+    <h2>一个工作台，四个核心能力</h2>
+  </div>
+
+  <div class="grid">
+
+    <!-- 卡片 1：多平台文案创作 -->
+    <div class="card">
+      <div class="num">01 / CREATION</div>
+      <svg class="card-ico" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6">
+        <rect x="6" y="8" width="12" height="15" rx="1.5"/>
+        <rect x="22" y="8" width="12" height="15" rx="1.5"/>
+        <path d="M10 13h4 M10 17h4 M26 13h4 M26 17h4"/>
+        <path d="M14 28l6-4 6 4" stroke-linecap="round"/>
+      </svg>
+      <h3>多平台文案创作</h3>
+      <p>输入一个主题，同时生成各平台专属文案。语气、结构、标签、字数全自动适配。</p>
+      <div class="platforms">
+        <span class="tag">抖音</span><span class="tag">小红书</span><span class="tag">公众号</span><span class="tag">知乎</span><span class="tag">B站</span>
+      </div>
+    </div>
+
+    <!-- 卡片 2：爆款拆解 -->
+    <div class="card">
+      <div class="num">02 / ANALYSIS</div>
+      <svg class="card-ico" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6">
+        <circle cx="17" cy="17" r="10"/>
+        <path d="M24 24l8 8" stroke-linecap="round"/>
+        <path d="M13 17l3 3 5-6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <h3>爆款拆解</h3>
+      <p>粘贴一条链接，AI 拆解它为什么火——钩子、结构、情绪曲线、数据证据，复用成功要素。</p>
+      <div class="platforms">
+        <span class="tag">链接解析</span><span class="tag">要素卡片</span><span class="tag">可复用模板</span>
+      </div>
+    </div>
+
+    <!-- 卡片 3：AI 视频重生成 -->
+    <div class="card">
+      <div class="num">03 / VIDEO</div>
+      <svg class="card-ico" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6">
+        <rect x="6" y="9" width="20" height="22" rx="2"/>
+        <path d="M12 16l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M30 14l4-2v16l-4-2" stroke-linejoin="round"/>
+        <path d="M26 24a6 6 0 000-8" stroke-linecap="round" opacity=".5"/>
+      </svg>
+      <h3>AI 视频重生成</h3>
+      <p>上传你的素材，按目标平台风格重新生成新视频。分镜、配音、转场全自动编排。</p>
+      <div class="platforms">
+        <span class="tag">Seedance 2.0</span><span class="tag">即梦</span><span class="tag">多尺寸输出</span>
+      </div>
+    </div>
+
+    <!-- 卡片 4：一键发布 -->
+    <div class="card">
+      <div class="num">04 / PUBLISH</div>
+      <svg class="card-ico" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6">
+        <circle cx="20" cy="8" r="3"/>
+        <circle cx="8" cy="28" r="3"/>
+        <circle cx="32" cy="28" r="3"/>
+        <path d="M20 11v0 M20 11L9 26 M20 11l11 15" stroke-linecap="round"/>
+      </svg>
+      <h3>一键多平台发布</h3>
+      <p>创作、审核、分发，一个平台完成。官方 API + 智能分发，支持定时与多账号。</p>
+      <div class="platforms">
+        <span class="tag">API直连</span><span class="tag">定时发布</span><span class="tag">多账号</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer>
+  <div class="foot-inner">
+    <div class="brand" style="font-size:14px">
+      <svg viewBox="0 0 32 32" style="width:18px;height:18px"><path d="M16 3 L29 16 L16 16 Z" fill="currentColor"/><path d="M29 16 L16 29 L16 16 Z" fill="currentColor" opacity=".55"/><path d="M16 29 L3 16 L16 16 Z" fill="currentColor"/><path d="M3 16 L16 3 L16 16 Z" fill="currentColor" opacity=".55"/></svg>
+      aggregator
+    </div>
+    <div class="mono">© 2026 · 高保真原型 v0.1</div>
+  </div>
+</footer>
+
+</body>
+</html>
