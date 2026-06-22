@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>标题优化 — 自媒体创作平台</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .page-head{padding:40px 0 24px}
+  .page-head h1{font-size:32px;margin-bottom:6px}
+
+  /* 标题输入区 */
+  .input-area{
+    background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);
+    padding:32px;margin-bottom:32px;
+  }
+  .input-area label{display:block;font-size:13px;color:var(--text-2);margin-bottom:12px;font-weight:500}
+  .title-input{
+    width:100%;background:var(--bg-3);border:1px solid var(--border-2);
+    border-radius:10px;padding:16px 20px;color:var(--text);font-size:18px;
+    font-family:inherit;transition:var(--ease);
+  }
+  .title-input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px var(--glow-soft)}
+  .input-actions{display:flex;gap:12px;margin-top:16px}
+
+  /* 评分卡 */
+  .score-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
+  .score-card{
+    background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);
+    padding:22px;text-align:center;
+  }
+  .score-card .label{font-size:12px;color:var(--text-3);font-family:'Geist Mono',monospace;margin-bottom:8px}
+  .score-card .value{font-size:36px;font-weight:600;color:var(--gold);letter-spacing:-0.03em}
+  .score-card .change{font-size:12px;margin-top:8px;color:var(--text-3)}
+
+  /* 优化建议 */
+  .sec-title{display:flex;align-items:center;gap:10px;margin:32px 0 16px}
+  .sec-title h2{font-size:18px}
+  .sec-title .ln{flex:1;height:1px;background:var(--border)}
+
+  .suggestion-list{display:flex;flex-direction:column;gap:12px}
+  .suggestion-item{
+    background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);
+    padding:22px;transition:var(--ease);
+  }
+  .suggestion-item:hover{border-color:var(--border-2)}
+  .suggestion-top{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+  .suggestion-icon{
+    width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+    font-size:16px;flex-shrink:0;
+  }
+  .suggestion-icon.good{background:rgba(74,222,128,.1);color:#4ade80;border:1px solid rgba(74,222,128,.3)}
+  .suggestion-icon.warn{background:rgba(251,191,36,.1);color:#fbbf24;border:1px solid rgba(251,191,36,.3)}
+  .suggestion-icon.bad{background:rgba(248,113,113,.1);color:#f87171;border:1px solid rgba(248,113,113,.3)}
+  .suggestion-info .t{font-size:15px;font-weight:500}
+  .suggestion-info .m{font-size:12px;color:var(--text-3);margin-top:2px}
+  .suggestion-content{font-size:14px;color:var(--text-2);line-height:1.7}
+
+  /* A/B 测试 */
+  .ab-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .ab-card{
+    background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);
+    padding:24px;cursor:pointer;transition:var(--ease);
+  }
+  .ab-card:hover{border-color:var(--border-2)}
+  .ab-card.winner{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold-3)}
+  .ab-label{font-size:12px;color:var(--text-3);font-family:'Geist Mono',monospace;margin-bottom:10px}
+  .ab-title{font-size:16px;font-weight:500;margin-bottom:16px;line-height:1.4}
+  .ab-stats{display:flex;gap:16px;font-size:12px;color:var(--text-3)}
+  .ab-stats .n{color:var(--gold);font-weight:500}
+  .ab-badge{
+    display:inline-block;font-size:11px;padding:3px 8px;border-radius:6px;font-weight:500;
+    background:var(--glow-soft);color:var(--gold);border:1px solid var(--gold-3);
+    margin-top:12px;
+  }
+
+  @media(max-width:900px){.score-grid{grid-template-columns:repeat(2,1fr)}.ab-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav class="nav"><div class="wrap nav-inner">
+  <a href="index.html" class="brand"><svg viewBox="0 0 32 32" class="logo" fill="none"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F5C669"/><stop offset="1" stop-color="#D4882E"/></linearGradient></defs><path d="M16 3 L29 16 L16 16 Z" fill="url(#lg)"/><path d="M29 16 L16 29 L16 16 Z" fill="url(#lg)" opacity=".6"/><path d="M16 29 L3 16 L16 16 Z" fill="url(#lg)"/><path d="M3 16 L16 3 L16 16 Z" fill="url(#lg)" opacity=".6"/></svg> 自媒体创作平台</a>
+  <div class="nav-links">
+    <a href="index.html">首页</a>
+    <div class="nav-item">
+      <a href="insight.html">洞察</a>
+      <div class="dropdown">
+        <a href="insight.html">热点洞察</a>
+        <a href="analyze.html">爆款拆解</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a href="create.html" class="active">创作</a>
+      <div class="dropdown">
+        <a href="create.html">创作工作台</a>
+        <a href="video.html">视频重生成</a>
+        <a href="optimize.html" class="active">标题优化</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a href="dashboard.html">数据</a>
+      <div class="dropdown">
+        <a href="dashboard.html">数据看板</a>
+        <a href="calendar.html">内容日历</a>
+        <a href="assets.html">素材库</a>
+        <a href="analysis.html">数据沉淀</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a href="team.html">团队</a>
+      <div class="dropdown">
+        <a href="team.html">团队协作</a>
+        <a href="publish.html">发布中心</a>
+      </div>
+    </div>
+  </div>
+  <div class="nav-right"><a href="#" class="btn btn-ghost">登录</a><a href="#" class="btn btn-gold">申请内测</a></div>
+</div></nav>
+
+<div class="wrap page-head">
+  <div class="label">// TITLE OPTIMIZER</div>
+  <h1>标题优化</h1>
+  <p class="muted" style="font-size:15px">AI 评估标题吸引力，给出优化建议</p>
+</div>
+
+<div class="wrap" style="padding-bottom:60px">
+  <!-- 标题输入区 -->
+  <div class="input-area">
+    <label>输入你的标题</label>
+    <input class="title-input" value="新手做小红书，第一个月如何涨粉1000" placeholder="输入标题...">
+    <div class="input-actions">
+      <button class="btn btn-gold" id="analyzeBtn">AI 分析</button>
+      <button class="btn btn-ghost">清空</button>
+    </div>
+  </div>
+
+  <!-- 评分卡 -->
+  <div class="score-grid">
+    <div class="score-card">
+      <div class="label">综合评分</div>
+      <div class="value" data-to="82">0</div>
+      <div class="change">良好</div>
+    </div>
+    <div class="score-card">
+      <div class="label">吸引力</div>
+      <div class="value" data-to="85">0</div>
+      <div class="change">优秀</div>
+    </div>
+    <div class="score-card">
+      <div class="label">清晰度</div>
+      <div class="value" data-to="78">0</div>
+      <div class="change">良好</div>
+    </div>
+    <div class="score-card">
+      <div class="label">爆款潜力</div>
+      <div class="value" data-to="72">0</div>
+      <div class="change">一般</div>
+    </div>
+  </div>
+
+  <!-- 优化建议 -->
+  <div class="sec-title"><h2>优化建议</h2><div class="ln"></div><span class="tag tag-gold">4 条建议</span></div>
+  <div class="suggestion-list">
+    <div class="suggestion-item">
+      <div class="suggestion-top">
+        <div class="suggestion-icon good">✓</div>
+        <div class="suggestion-info">
+          <div class="t">数字+痛点+利益 结构好</div>
+          <div class="m">标题使用了「1000粉」具体数字，给读者明确预期</div>
+        </div>
+      </div>
+      <div class="suggestion-content">
+        数字型标题点击率比普通标题高 30%+。你的标题用了「1000粉」这个具体数字，让读者有明确预期，这是很好的做法。
+      </div>
+    </div>
+    <div class="suggestion-item">
+      <div class="suggestion-top">
+        <div class="suggestion-icon warn">⚠</div>
+        <div class="suggestion-info">
+          <div class="t">缺少情绪词</div>
+          <div class="m">建议加入「真实」「保姆级」「震惊」等情绪词</div>
+        </div>
+      </div>
+      <div class="suggestion-content">
+        情绪词能激发读者好奇心和点击欲望。建议在标题中加入「真实」「保姆级」「震惊」「后悔」等情绪词，提升吸引力。
+      </div>
+    </div>
+    <div class="suggestion-item">
+      <div class="suggestion-top">
+        <div class="suggestion-icon warn">⚠</div>
+        <div class="suggestion-info">
+          <div class="t">可增加「附赠」钩子</div>
+          <div class="m">如「附模板」「附工具」「附清单」能提升收藏率</div>
+        </div>
+      </div>
+      <div class="suggestion-content">
+        「附赠」类钩子能显著提升收藏率。建议在标题末尾加上「附模板」「附工具」「附清单」等钩子，让读者觉得「收藏=拥有」。
+      </div>
+    </div>
+    <div class="suggestion-item">
+      <div class="suggestion-top">
+        <div class="suggestion-icon good">✓</div>
+        <div class="suggestion-info">
+          <div class="t">目标人群明确</div>
+          <div class="m">「新手」二字精准定位目标受众</div>
+        </div>
+      </div>
+      <div class="suggestion-content">
+        「新手」二字精准定位了目标受众，让有需求的读者一眼就知道「这是写给我的」。人群越精准，点击率越高。
+      </div>
+    </div>
+  </div>
+
+  <!-- A/B 测试 -->
+  <div class="sec-title"><h2>A/B 测试</h2><div class="ln"></div></div>
+  <div class="ab-grid">
+    <div class="ab-card">
+      <div class="ab-label">版本 A（原标题）</div>
+      <div class="ab-title">新手做小红书，第一个月如何涨粉1000</div>
+      <div class="ab-stats">
+        <span>预估点击率 <span class="n">3.2%</span></span>
+        <span>预估收藏率 <span class="n">2.1%</span></span>
+      </div>
+    </div>
+    <div class="ab-card winner">
+      <div class="ab-label">版本 B（AI 优化）</div>
+      <div class="ab-title">新手做小红书，第一个月涨粉1000的真实复盘（附模板）</div>
+      <div class="ab-stats">
+        <span>预估点击率 <span class="n">4.8%</span></span>
+        <span>预估收藏率 <span class="n">3.5%</span></span>
+      </div>
+      <div class="ab-badge">推荐使用</div>
+    </div>
+  </div>
+
+  <!-- 更多优化版本 -->
+  <div style="text-align:center;padding:40px 0">
+    <button class="btn btn-gold btn-lg">生成更多优化版本 →</button>
+  </div>
+</div>
+
+<footer><div class="wrap foot-inner">
+  <div class="brand" style="font-size:14px"><svg viewBox="0 0 32 32" class="logo" style="width:18px;height:18px" fill="#E8A33D"><path d="M16 3 L29 16 L16 16 Z"/><path d="M29 16 L16 29 L16 16 Z" opacity=".6"/><path d="M16 29 L3 16 L16 16 Z"/><path d="M3 16 L16 3 L16 16 Z" opacity=".6"/></svg> 自媒体创作平台</div>
+  <div class="mono">© 2026 · 标题优化</div>
+</div></footer>
+
+<script src="assets/demo.js"></script>
+<script>
+  // 评分数字 count-up
+  const scoreValues=document.querySelectorAll('.score-card .value[data-to]');
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        Demo.countUp(e.target,parseInt(e.target.dataset.to));
+        io.unobserve(e.target);
+      }
+    });
+  },{threshold:.4});
+  scoreValues.forEach(c=>io.observe(c));
+
+  // 分析按钮交互
+  const analyzeBtn=document.getElementById('analyzeBtn');
+  analyzeBtn.addEventListener('click',()=>{
+    Demo.btnLoading(analyzeBtn,'AI 分析中…');
+    setTimeout(()=>{
+      Demo.btnDone(analyzeBtn,'AI 分析');
+      Demo.toast('标题分析完成 · 4 条优化建议');
+    },1500);
+  });
+</script>
+</body>
+</html>

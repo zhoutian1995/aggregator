@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WilleAI工具实验室 — 全平台内容创作实验室</title>
+<title>自媒体创作平台 — 全平台内容创作实验室</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap" rel="stylesheet">
@@ -53,14 +53,41 @@
         <path d="M16 29 L3 16 L16 16 Z" fill="url(#lg)"/>
         <path d="M3 16 L16 3 L16 16 Z" fill="url(#lg)" opacity=".6"/>
       </svg>
-      WilleAI <span class="sub">工具实验室</span>
+      自媒体创作平台
     </a>
     <div class="nav-links">
       <a href="index.html" class="active">首页</a>
-      <a href="create.html">创作</a>
-      <a href="analyze.html">拆解</a>
-      <a href="video.html">视频</a>
-      <a href="publish.html">发布</a>
+      <div class="nav-item">
+        <a href="insight.html">洞察</a>
+        <div class="dropdown">
+          <a href="insight.html">热点洞察</a>
+          <a href="analyze.html">爆款拆解</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a href="create.html">创作</a>
+        <div class="dropdown">
+          <a href="create.html">创作工作台</a>
+          <a href="video.html">视频重生成</a>
+          <a href="optimize.html">标题优化</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a href="dashboard.html">数据</a>
+        <div class="dropdown">
+          <a href="dashboard.html">数据看板</a>
+          <a href="calendar.html">内容日历</a>
+          <a href="assets.html">素材库</a>
+          <a href="analysis.html">数据沉淀</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a href="team.html">团队</a>
+        <div class="dropdown">
+          <a href="team.html">团队协作</a>
+          <a href="publish.html">发布中心</a>
+        </div>
+      </div>
     </div>
     <div class="nav-right">
       <a href="#" class="btn btn-ghost">登录</a>
@@ -71,21 +98,21 @@
 
 <!-- ========== HERO ========== -->
 <section class="wrap hero">
-  <span class="eyebrow"><span class="dot"></span> WilleAI · 工具实验室</span>
-  <h1>一个实验室，<br><span class="accent">搞定全平台内容创作</span></h1>
+  <span class="eyebrow"><span class="dot"></span> 自媒体创作平台 · AI 内容团队</span>
+  <h1>一个平台，<br><span class="accent">搞定全平台内容创作</span></h1>
   <p class="sub">
-    <b>文案创作</b> · <b>爆款拆解</b> · <b>AI视频重生成</b> · <b>一键发布</b>。<br>
-    为高端创作者打造的 AI 内容创作实验室。
+    <b>热点洞察</b> · <b>文案创作</b> · <b>爆款拆解</b> · <b>AI视频重生成</b> · <b>数据看板</b> · <b>一键发布</b>。<br>
+    为高端创作者打造的 AI 内容创作闭环。
   </p>
   <div class="cta-row">
-    <a href="create.html" class="btn btn-gold btn-lg">开始创作 →</a>
+    <a href="insight.html" class="btn btn-gold btn-lg">开始洞察 →</a>
     <a href="#" class="btn btn-ghost btn-lg">观看演示</a>
   </div>
 
   <div class="preview">
     <div class="preview-bar">
       <i></i><i></i><i></i>
-      <span class="url">willeai.cn / dashboard</span>
+      <span class="url">aggregator.willeai.cn / dashboard</span>
     </div>
     <div class="preview-body">
       <div class="pv-cell"><div class="k">本月产出</div><div class="v" data-to="1284">0</div><div class="d">篇多平台文案</div></div>
@@ -99,21 +126,21 @@
 <!-- ========== FEATURES ========== -->
 <section class="wrap features">
   <div class="section-head">
-    <div class="label">// LAB TOOLS</div>
-    <h2>四个工具，一个工作流</h2>
+    <div class="label">// PLATFORM TOOLS</div>
+    <h2>九大功能，一个闭环</h2>
   </div>
 
   <div class="grid-2">
 
-    <a href="create.html" class="card card-hover feat-card">
-      <div class="num">01 / CREATION</div>
+    <a href="insight.html" class="card card-hover feat-card">
+      <div class="num">01 / INSIGHT</div>
       <svg class="ico" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6">
-        <rect x="6" y="8" width="12" height="15" rx="1.5"/><rect x="22" y="8" width="12" height="15" rx="1.5"/>
-        <path d="M10 13h4 M10 17h4 M26 13h4 M26 17h4"/><path d="M14 28l6-4 6 4" stroke-linecap="round"/>
+        <circle cx="20" cy="20" r="14"/><path d="M20 10v10l6 4" stroke-linecap="round"/>
+        <path d="M10 20h2M28 20h2M20 10v-2M20 30v2" stroke-linecap="round"/>
       </svg>
-      <h3>多平台文案创作</h3>
-      <p>输入一个主题，同时生成各平台专属文案。语气、结构、标签、字数全自动适配。</p>
-      <div class="tags"><span class="tag">抖音</span><span class="tag">小红书</span><span class="tag">公众号</span><span class="tag">知乎</span><span class="tag">B站</span></div>
+      <h3>热点洞察</h3>
+      <p>实时追踪行业热点，发现爆款机会。热点榜单、行业趋势、竞品监控，数据驱动选题。</p>
+      <div class="tags"><span class="tag">热点榜单</span><span class="tag">行业趋势</span><span class="tag">竞品监控</span></div>
     </a>
 
     <a href="analyze.html" class="card card-hover feat-card">
@@ -127,8 +154,19 @@
       <div class="tags"><span class="tag">链接解析</span><span class="tag">要素卡片</span><span class="tag">可复用模板</span></div>
     </a>
 
+    <a href="create.html" class="card card-hover feat-card">
+      <div class="num">03 / CREATION</div>
+      <svg class="ico" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6">
+        <rect x="6" y="8" width="12" height="15" rx="1.5"/><rect x="22" y="8" width="12" height="15" rx="1.5"/>
+        <path d="M10 13h4 M10 17h4 M26 13h4 M26 17h4"/><path d="M14 28l6-4 6 4" stroke-linecap="round"/>
+      </svg>
+      <h3>多平台文案创作</h3>
+      <p>输入一个主题，同时生成各平台专属文案。语气、结构、标签、字数全自动适配。</p>
+      <div class="tags"><span class="tag">抖音</span><span class="tag">小红书</span><span class="tag">公众号</span><span class="tag">知乎</span><span class="tag">B站</span></div>
+    </a>
+
     <a href="video.html" class="card card-hover feat-card">
-      <div class="num">03 / VIDEO</div>
+      <div class="num">04 / VIDEO</div>
       <svg class="ico" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6">
         <rect x="6" y="9" width="20" height="22" rx="2"/><path d="M12 16l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/>
         <path d="M30 14l4-2v16l-4-2" stroke-linejoin="round"/>
@@ -138,15 +176,59 @@
       <div class="tags"><span class="tag">Seedance 2.0</span><span class="tag">即梦</span><span class="tag">多尺寸输出</span></div>
     </a>
 
-    <a href="publish.html" class="card card-hover feat-card">
-      <div class="num">04 / PUBLISH</div>
+    <a href="optimize.html" class="card card-hover feat-card">
+      <div class="num">05 / OPTIMIZE</div>
       <svg class="ico" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6">
-        <circle cx="20" cy="8" r="3"/><circle cx="8" cy="28" r="3"/><circle cx="32" cy="28" r="3"/>
-        <path d="M20 11L9 26 M20 11l11 15" stroke-linecap="round"/>
+        <path d="M8 20h24M8 12h24M8 28h24" stroke-linecap="round"/>
+        <circle cx="14" cy="12" r="3"/><circle cx="26" cy="20" r="3"/><circle cx="18" cy="28" r="3"/>
       </svg>
-      <h3>一键多平台发布</h3>
-      <p>创作、审核、分发，一个平台完成。官方 API + 智能分发，支持定时与多账号。</p>
-      <div class="tags"><span class="tag">API直连</span><span class="tag">定时发布</span><span class="tag">多账号</span></div>
+      <h3>标题优化</h3>
+      <p>AI 评估标题吸引力，给出优化建议。A/B 测试、关键词优化、爆款标题公式。</p>
+      <div class="tags"><span class="tag">AI 评分</span><span class="tag">A/B 测试</span><span class="tag">优化建议</span></div>
+    </a>
+
+    <a href="dashboard.html" class="card card-hover feat-card">
+      <div class="num">06 / DASHBOARD</div>
+      <svg class="ico" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6">
+        <rect x="6" y="6" width="28" height="28" rx="3"/><path d="M6 14h28M14 6v28" stroke-linecap="round"/>
+        <path d="M10 22l4-4 4 4 4-8 4 4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <h3>数据看板</h3>
+      <p>全平台数据汇总，一眼看清内容效果。阅读、点赞、粉丝、爆款率，一目了然。</p>
+      <div class="tags"><span class="tag">全平台汇总</span><span class="tag">内容对比</span><span class="tag">粉丝画像</span></div>
+    </a>
+
+    <a href="calendar.html" class="card card-hover feat-card">
+      <div class="num">07 / CALENDAR</div>
+      <svg class="ico" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6">
+        <rect x="6" y="8" width="28" height="26" rx="3"/><path d="M6 16h28" stroke-linecap="round"/>
+        <path d="M14 4v8M26 4v8" stroke-linecap="round"/>
+      </svg>
+      <h3>内容日历</h3>
+      <p>规划你的内容排期，保持持续输出。日历视图、智能排期、批量规划、提醒推送。</p>
+      <div class="tags"><span class="tag">日历视图</span><span class="tag">智能排期</span><span class="tag">提醒推送</span></div>
+    </a>
+
+    <a href="assets.html" class="card card-hover feat-card">
+      <div class="num">08 / ASSETS</div>
+      <svg class="ico" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6">
+        <rect x="6" y="6" width="12" height="12" rx="2"/><rect x="22" y="6" width="12" height="12" rx="2"/>
+        <rect x="6" y="22" width="12" height="12" rx="2"/><rect x="22" y="22" width="12" height="12" rx="2"/>
+      </svg>
+      <h3>素材库</h3>
+      <p>云端素材管理，快速找到可用素材。图片、视频、音乐、模板，统一管理。</p>
+      <div class="tags"><span class="tag">云端存储</span><span class="tag">AI 推荐</span><span class="tag">版权无忧</span></div>
+    </a>
+
+    <a href="team.html" class="card card-hover feat-card">
+      <div class="num">09 / TEAM</div>
+      <svg class="ico" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6">
+        <circle cx="14" cy="14" r="5"/><circle cx="26" cy="14" r="5"/>
+        <path d="M6 30c0-5 4-9 8-9s8 4 8 9M18 30c0-5 4-9 8-9s8 4 8 9" stroke-linecap="round"/>
+      </svg>
+      <h3>团队协作</h3>
+      <p>多人协作、审核流程、版本管理。一旦团队跑通，迁移成本极高，续费率自然高。</p>
+      <div class="tags"><span class="tag">多人协作</span><span class="tag">审核流程</span><span class="tag">版本管理</span></div>
     </a>
 
   </div>
@@ -160,9 +242,9 @@
         <path d="M16 3 L29 16 L16 16 Z"/><path d="M29 16 L16 29 L16 16 Z" opacity=".6"/>
         <path d="M16 29 L3 16 L16 16 Z"/><path d="M3 16 L16 3 L16 16 Z" opacity=".6"/>
       </svg>
-      WilleAI <span class="sub">工具实验室</span>
+      自媒体创作平台
     </div>
-    <div class="mono">© 2026 · 暖夜琥珀原型 v0.2</div>
+    <div class="mono">© 2026 · 高端创作者的专属 AI 内容团队</div>
   </div>
 </footer>
 

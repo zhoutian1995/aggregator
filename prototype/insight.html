@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>热点洞察 — 自媒体创作平台</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .page-head{padding:40px 0 24px}
+  .page-head h1{font-size:32px;margin-bottom:6px}
+  .workbench{display:grid;grid-template-columns:280px 1fr;gap:24px;padding-bottom:60px;align-items:start}
+
+  /* 左筛选面板 */
+  .panel{background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);padding:24px;position:sticky;top:88px}
+  .field{margin-bottom:22px}
+  .field label{display:block;font-size:13px;color:var(--text-2);margin-bottom:9px;font-weight:500}
+  .seg{display:flex;gap:6px;flex-wrap:wrap}
+  .seg button{border:1px solid var(--border-2);background:var(--bg-3);color:var(--text-2);border-radius:8px;padding:7px 12px;font-size:13px;cursor:pointer;transition:var(--ease);font-family:inherit}
+  .seg button.on{border-color:var(--gold);background:var(--glow-soft);color:var(--gold)}
+
+  /* 热点榜单 */
+  .hot-list{display:flex;flex-direction:column;gap:12px}
+  .hot-item{
+    display:flex;align-items:center;gap:16px;background:var(--bg-2);
+    border:1px solid var(--border);border-radius:var(--radius);padding:18px 22px;
+    transition:var(--ease);cursor:pointer;
+  }
+  .hot-item:hover{border-color:var(--border-2);background:var(--bg-3)}
+  .hot-rank{
+    width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+    font-size:14px;font-weight:600;font-family:'Geist Mono',monospace;flex-shrink:0;
+  }
+  .hot-rank.top{background:var(--glow);color:var(--gold);border:1px solid var(--gold-3)}
+  .hot-rank.normal{background:var(--bg-3);color:var(--text-3);border:1px solid var(--border-2)}
+  .hot-info{flex:1;min-width:0}
+  .hot-info .t{font-size:15px;font-weight:500;margin-bottom:4px}
+  .hot-info .m{font-size:12px;color:var(--text-3);font-family:'Geist Mono',monospace}
+  .hot-meta{display:flex;gap:16px;font-size:12px;color:var(--text-3);font-family:'Geist Mono',monospace}
+  .hot-meta .n{color:var(--gold);font-weight:500}
+
+  /* 趋势图 */
+  .sec-title{display:flex;align-items:center;gap:10px;margin:32px 0 16px}
+  .sec-title h2{font-size:18px}
+  .sec-title .ln{flex:1;height:1px;background:var(--border)}
+
+  /* 竞品监控 */
+  .compete-list{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  .compete-card{
+    background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);
+    padding:18px;transition:var(--ease);cursor:pointer;
+  }
+  .compete-card:hover{border-color:var(--border-2)}
+  .compete-top{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+  .compete-avatar{
+    width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--gold-3),var(--bg-3));
+    display:flex;align-items:center;justify-content:center;color:var(--bg);font-weight:700;font-size:14px;
+  }
+  .compete-info .n{font-size:14px;font-weight:500}
+  .compete-info .p{font-size:12px;color:var(--text-3)}
+  .compete-stats{display:flex;gap:12px;font-size:12px;color:var(--text-3)}
+  .compete-stats .n{color:var(--gold);font-weight:500}
+
+  @media(max-width:900px){.workbench{grid-template-columns:1fr}.panel{position:static}.compete-list{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav class="nav"><div class="wrap nav-inner">
+  <a href="index.html" class="brand"><svg viewBox="0 0 32 32" class="logo" fill="none"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F5C669"/><stop offset="1" stop-color="#D4882E"/></linearGradient></defs><path d="M16 3 L29 16 L16 16 Z" fill="url(#lg)"/><path d="M29 16 L16 29 L16 16 Z" fill="url(#lg)" opacity=".6"/><path d="M16 29 L3 16 L16 16 Z" fill="url(#lg)"/><path d="M3 16 L16 3 L16 16 Z" fill="url(#lg)" opacity=".6"/></svg> 自媒体创作平台</a>
+  <div class="nav-links">
+    <a href="index.html">首页</a>
+    <div class="nav-item">
+      <a href="insight.html" class="active">洞察</a>
+      <div class="dropdown">
+        <a href="insight.html" class="active">热点洞察</a>
+        <a href="analyze.html">爆款拆解</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a href="create.html">创作</a>
+      <div class="dropdown">
+        <a href="create.html">创作工作台</a>
+        <a href="video.html">视频重生成</a>
+        <a href="optimize.html">标题优化</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a href="dashboard.html">数据</a>
+      <div class="dropdown">
+        <a href="dashboard.html">数据看板</a>
+        <a href="calendar.html">内容日历</a>
+        <a href="assets.html">素材库</a>
+        <a href="analysis.html">数据沉淀</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a href="team.html">团队</a>
+      <div class="dropdown">
+        <a href="team.html">团队协作</a>
+        <a href="publish.html">发布中心</a>
+      </div>
+    </div>
+  </div>
+  <div class="nav-right"><a href="#" class="btn btn-ghost">登录</a><a href="#" class="btn btn-gold">申请内测</a></div>
+</div></nav>
+
+<div class="wrap page-head">
+  <div class="label">// TREND INSIGHT</div>
+  <h1>热点洞察</h1>
+  <p class="muted" style="font-size:15px">实时追踪行业热点，发现爆款机会</p>
+</div>
+
+<div class="wrap workbench">
+  <!-- 左：筛选面板 -->
+  <aside class="panel">
+    <div class="field">
+      <label>平台</label>
+      <div class="seg">
+        <button class="on">全部</button>
+        <button>抖音</button>
+        <button>小红书</button>
+        <button>B站</button>
+        <button>微博</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>时间</label>
+      <div class="seg">
+        <button class="on">今日</button>
+        <button>本周</button>
+        <button>本月</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>领域</label>
+      <div class="seg">
+        <button class="on">全部</button>
+        <button>美妆</button>
+        <button>穿搭</button>
+        <button>美食</button>
+        <button>科技</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>排序</label>
+      <div class="seg">
+        <button class="on">热度</button>
+        <button>最新</button>
+        <button>上升最快</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- 右：热点内容 -->
+  <section>
+    <!-- 实时热点榜 -->
+    <div class="sec-title"><h2>实时热点榜</h2><div class="ln"></div><span class="tag tag-gold">TOP 10</span></div>
+    <div class="hot-list">
+      <div class="hot-item">
+        <div class="hot-rank top">1</div>
+        <div class="hot-info">
+          <div class="t">AI 写真爆火：一键生成杂志封面，小红书点赞破 10 万</div>
+          <div class="m">小红书 · 美妆 · 2 小时前</div>
+        </div>
+        <div class="hot-meta"><span class="n">128.5w</span> 热度</div>
+      </div>
+      <div class="hot-item">
+        <div class="hot-rank top">2</div>
+        <div class="hot-info">
+          <div class="t">「多巴胺穿搭」升级版：秋冬美拉德色系成新趋势</div>
+          <div class="m">抖音 · 穿搭 · 3 小时前</div>
+        </div>
+        <div class="hot-meta"><span class="n">96.2w</span> 热度</div>
+      </div>
+      <div class="hot-item">
+        <div class="hot-rank top">3</div>
+        <div class="hot-info">
+          <div class="t">打工人早餐新宠：5 分钟搞定的高蛋白食谱</div>
+          <div class="m">小红书 · 美食 · 4 小时前</div>
+        </div>
+        <div class="hot-meta"><span class="n">82.1w</span> 热度</div>
+      </div>
+      <div class="hot-item">
+        <div class="hot-rank normal">4</div>
+        <div class="hot-info">
+          <div class="t">iPhone 16 真实体验：这 3 个功能让我后悔买晚了</div>
+          <div class="m">B站 · 科技 · 5 小时前</div>
+        </div>
+        <div class="hot-meta"><span class="n">68.7w</span> 热度</div>
+      </div>
+      <div class="hot-item">
+        <div class="hot-rank normal">5</div>
+        <div class="hot-info">
+          <div class="t">租房改造：2000 元打造 ins 风卧室，房东看了都想住</div>
+          <div class="m">小红书 · 家居 · 6 小时前</div>
+        </div>
+        <div class="hot-meta"><span class="n">55.3w</span> 热度</div>
+      </div>
+      <div class="hot-item">
+        <div class="hot-rank normal">6</div>
+        <div class="hot-info">
+          <div class="t">ChatGPT 新功能实测：能替代 90% 的文案工作？</div>
+          <div class="m">公众号 · 科技 · 7 小时前</div>
+        </div>
+        <div class="hot-meta"><span class="n">42.8w</span> 热度</div>
+      </div>
+      <div class="hot-item">
+        <div class="hot-rank normal">7</div>
+        <div class="hot-info">
+          <div class="t">秋冬护肤避雷：这 5 款网红产品千万别买</div>
+          <div class="m">抖音 · 美妆 · 8 小时前</div>
+        </div>
+        <div class="hot-meta"><span class="n">38.5w</span> 热度</div>
+      </div>
+      <div class="hot-item">
+        <div class="hot-rank normal">8</div>
+        <div class="hot-info">
+          <div class="t">副业赚钱：靠小红书月入 2 万的真实复盘</div>
+          <div class="m">小红书 · 职场 · 9 小时前</div>
+        </div>
+        <div class="hot-meta"><span class="n">31.2w</span> 热度</div>
+      </div>
+      <div class="hot-item">
+        <div class="hot-rank normal">9</div>
+        <div class="hot-info">
+          <div class="t">露营新手必看：1000 元装备清单，小白也能玩得转</div>
+          <div class="m">B站 · 生活 · 10 小时前</div>
+        </div>
+        <div class="hot-meta"><span class="n">28.6w</span> 热度</div>
+      </div>
+      <div class="hot-item">
+        <div class="hot-rank normal">10</div>
+        <div class="hot-info">
+          <div class="t">职场沟通技巧：这 3 句话让领导主动给你加薪</div>
+          <div class="m">公众号 · 职场 · 11 小时前</div>
+        </div>
+        <div class="hot-meta"><span class="n">24.1w</span> 热度</div>
+      </div>
+    </div>
+
+    <!-- 行业趋势 -->
+    <div class="sec-title"><h2>行业趋势</h2><div class="ln"></div></div>
+    <div class="card" style="padding:24px">
+      <svg viewBox="0 0 600 200" style="width:100%;height:180px">
+        <defs><linearGradient id="tg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E8A33D" stop-opacity=".3"/><stop offset="1" stop-color="#E8A33D" stop-opacity="0"/></linearGradient></defs>
+        <!-- 网格 -->
+        <line x1="0" y1="50" x2="600" y2="50" stroke="var(--border)" stroke-width="1"/>
+        <line x1="0" y1="100" x2="600" y2="100" stroke="var(--border)" stroke-width="1"/>
+        <line x1="0" y1="150" x2="600" y2="150" stroke="var(--border)" stroke-width="1"/>
+        <!-- 趋势线 -->
+        <path d="M0 150 L100 130 L200 140 L300 100 L400 80 L500 60 L600 40 L600 200 L0 200 Z" fill="url(#tg)"/>
+        <path d="M0 150 L100 130 L200 140 L300 100 L400 80 L500 60 L600 40" fill="none" stroke="#E8A33D" stroke-width="2"/>
+        <!-- 数据点 -->
+        <circle cx="100" cy="130" r="4" fill="#E8A33D"/>
+        <circle cx="300" cy="100" r="4" fill="#E8A33D"/>
+        <circle cx="500" cy="60" r="4" fill="#E8A33D"/>
+        <!-- 标签 -->
+        <text x="100" y="170" fill="var(--text-3)" font-size="11" text-anchor="middle">周一</text>
+        <text x="300" y="170" fill="var(--text-3)" font-size="11" text-anchor="middle">周三</text>
+        <text x="500" y="170" fill="var(--text-3)" font-size="11" text-anchor="middle">周五</text>
+      </svg>
+      <div style="display:flex;gap:18px;font-size:12px;color:var(--text-2);margin-top:14px;font-family:'Geist Mono',monospace">
+        <span style="display:flex;align-items:center;gap:6px"><i style="width:10px;height:2px;background:var(--gold)"></i>「AI 写真」热度趋势</span>
+        <span style="color:var(--text-3)">本周上升 320%</span>
+      </div>
+    </div>
+
+    <!-- 竞品监控 -->
+    <div class="sec-title"><h2>竞品监控</h2><div class="ln"></div><button class="icon-btn" style="border:1px solid var(--border-2);background:var(--bg-3);color:var(--text-2);border-radius:7px;padding:6px 12px;font-size:12px;cursor:pointer">+ 添加竞品</button></div>
+    <div class="compete-list">
+      <div class="compete-card">
+        <div class="compete-top">
+          <div class="compete-avatar">李</div>
+          <div class="compete-info">
+            <div class="n">李佳琦Austin</div>
+            <div class="p">抖音 · 美妆 · 5200万粉丝</div>
+          </div>
+        </div>
+        <div class="compete-stats">
+          <span>近7天 <span class="n">3</span> 条爆款</span>
+          <span>平均点赞 <span class="n">85.2w</span></span>
+        </div>
+      </div>
+      <div class="compete-card">
+        <div class="compete-top">
+          <div class="compete-avatar">张</div>
+          <div class="compete-info">
+            <div class="n">张踩铃</div>
+            <div class="p">抖音 · 搞笑 · 1800万粉丝</div>
+          </div>
+        </div>
+        <div class="compete-stats">
+          <span>近7天 <span class="n">2</span> 条爆款</span>
+          <span>平均点赞 <span class="n">62.8w</span></span>
+        </div>
+      </div>
+      <div class="compete-card">
+        <div class="compete-top">
+          <div class="compete-avatar">房</div>
+          <div class="compete-info">
+            <div class="n">房琪kiki</div>
+            <div class="p">小红书 · 旅行 · 980万粉丝</div>
+          </div>
+        </div>
+        <div class="compete-stats">
+          <span>近7天 <span class="n">4</span> 条爆款</span>
+          <span>平均点赞 <span class="n">28.5w</span></span>
+        </div>
+      </div>
+      <div class="compete-card">
+        <div class="compete-top">
+          <div class="compete-avatar">老</div>
+          <div class="compete-info">
+            <div class="n">老番茄</div>
+            <div class="p">B站 · 游戏 · 2500万粉丝</div>
+          </div>
+        </div>
+        <div class="compete-stats">
+          <span>近7天 <span class="n">1</span> 条爆款</span>
+          <span>平均点赞 <span class="n">156.3w</span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 一键创作 -->
+    <div style="text-align:center;padding:40px 0">
+      <a href="create.html" class="btn btn-gold btn-lg">基于热点一键创作 →</a>
+    </div>
+  </section>
+</div>
+
+<footer><div class="wrap foot-inner">
+  <div class="brand" style="font-size:14px"><svg viewBox="0 0 32 32" class="logo" style="width:18px;height:18px" fill="#E8A33D"><path d="M16 3 L29 16 L16 16 Z"/><path d="M29 16 L16 29 L16 16 Z" opacity=".6"/><path d="M16 29 L3 16 L16 16 Z"/><path d="M3 16 L16 3 L16 16 Z" opacity=".6"/></svg> 自媒体创作平台</div>
+  <div class="mono">© 2026 · 热点洞察</div>
+</div></footer>
+
+<script src="assets/demo.js"></script>
+<script>
+  document.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>{b.parentElement.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on')});
+</script>
+</body>
+</html>

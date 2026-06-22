@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>团队协作 — 自媒体创作平台</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .page-head{padding:40px 0 24px}
+  .page-head h1{font-size:32px;margin-bottom:6px}
+  .workbench{display:grid;grid-template-columns:1fr 360px;gap:24px;padding-bottom:60px;align-items:start}
+
+  /* 团队成员栏 */
+  .team-bar{
+    display:flex;align-items:center;gap:16px;background:var(--bg-2);
+    border:1px solid var(--border);border-radius:var(--radius);padding:18px 24px;margin-bottom:24px;
+  }
+  .team-avatars{display:flex;gap:-8px}
+  .team-avatar{
+    width:36px;height:36px;border-radius:50%;border:2px solid var(--bg-2);
+    display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;
+    margin-left:-8px;
+  }
+  .team-avatar:first-child{margin-left:0}
+  .team-avatar.you{background:linear-gradient(135deg,var(--gold-3),var(--gold));color:var(--bg)}
+  .team-avatar.other{background:var(--bg-3);color:var(--text-2)}
+  .team-info{flex:1}
+  .team-info .n{font-size:14px;font-weight:500}
+  .team-info .m{font-size:12px;color:var(--text-3)}
+
+  /* 内容列表 */
+  .content-list{display:flex;flex-direction:column;gap:12px}
+  .content-item{
+    background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);
+    padding:18px;cursor:pointer;transition:var(--ease);
+  }
+  .content-item:hover{border-color:var(--border-2)}
+  .content-item.active{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold-3)}
+  .content-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+  .content-title{font-size:14px;font-weight:500}
+  .content-status{
+    font-size:11px;padding:3px 8px;border-radius:6px;font-weight:500;
+    border:1px solid;font-family:'Geist Mono',monospace;
+  }
+  .content-status.pending{color:#fbbf24;border-color:rgba(251,191,36,.3);background:rgba(251,191,36,.1)}
+  .content-status.approved{color:#4ade80;border-color:rgba(74,222,128,.3);background:rgba(74,222,128,.1)}
+  .content-status.published{color:var(--gold);border-color:var(--gold-3);background:var(--glow-soft)}
+  .content-meta{display:flex;gap:12px;font-size:12px;color:var(--text-3);font-family:'Geist Mono',monospace}
+  .content-author{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-2);margin-top:10px}
+  .content-author .avatar{
+    width:20px;height:20px;border-radius:50%;background:var(--bg-3);
+    display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-3);
+  }
+
+  /* 右侧详情面板 */
+  .detail-panel{background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);padding:24px;position:sticky;top:88px}
+  .detail-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+  .detail-header h3{font-size:16px}
+  .detail-status{
+    font-size:11px;padding:4px 10px;border-radius:6px;font-weight:500;
+    border:1px solid;font-family:'Geist Mono',monospace;
+  }
+  .detail-status.pending{color:#fbbf24;border-color:rgba(251,191,36,.3);background:rgba(251,191,36,.1)}
+
+  .detail-section{margin-bottom:20px}
+  .detail-section h4{font-size:13px;color:var(--text-3);margin-bottom:10px;font-weight:500}
+  .detail-content{
+    background:var(--bg-3);border-radius:9px;padding:16px;font-size:14px;
+    color:var(--text-2);line-height:1.7;max-height:200px;overflow-y:auto;
+  }
+
+  .detail-actions{display:flex;gap:10px;margin-top:20px}
+  .detail-actions .btn{flex:1;justify-content:center}
+
+  /* 审核历史 */
+  .history-list{display:flex;flex-direction:column;gap:10px}
+  .history-item{display:flex;gap:12px;font-size:13px}
+  .history-item .dot{
+    width:8px;height:8px;border-radius:50%;margin-top:6px;flex-shrink:0;
+  }
+  .history-item .dot.approve{background:#4ade80}
+  .history-item .dot.reject{background:#f87171}
+  .history-item .dot.comment{background:var(--text-3)}
+  .history-item .info{flex:1}
+  .history-item .info .n{font-weight:500}
+  .history-item .info .m{color:var(--text-3);font-size:12px;margin-top:2px}
+
+  @media(max-width:900px){.workbench{grid-template-columns:1fr}.detail-panel{position:static}}
+</style>
+</head>
+<body>
+
+<nav class="nav"><div class="wrap nav-inner">
+  <a href="index.html" class="brand"><svg viewBox="0 0 32 32" class="logo" fill="none"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F5C669"/><stop offset="1" stop-color="#D4882E"/></linearGradient></defs><path d="M16 3 L29 16 L16 16 Z" fill="url(#lg)"/><path d="M29 16 L16 29 L16 16 Z" fill="url(#lg)" opacity=".6"/><path d="M16 29 L3 16 L16 16 Z" fill="url(#lg)"/><path d="M3 16 L16 3 L16 16 Z" fill="url(#lg)" opacity=".6"/></svg> 自媒体创作平台</a>
+  <div class="nav-links">
+    <a href="index.html">首页</a>
+    <div class="nav-item">
+      <a href="insight.html">洞察</a>
+      <div class="dropdown">
+        <a href="insight.html">热点洞察</a>
+        <a href="analyze.html">爆款拆解</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a href="create.html">创作</a>
+      <div class="dropdown">
+        <a href="create.html">创作工作台</a>
+        <a href="video.html">视频重生成</a>
+        <a href="optimize.html">标题优化</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a href="dashboard.html">数据</a>
+      <div class="dropdown">
+        <a href="dashboard.html">数据看板</a>
+        <a href="calendar.html">内容日历</a>
+        <a href="assets.html">素材库</a>
+        <a href="analysis.html">数据沉淀</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a href="team.html" class="active">团队</a>
+      <div class="dropdown">
+        <a href="team.html" class="active">团队协作</a>
+        <a href="publish.html">发布中心</a>
+      </div>
+    </div>
+  </div>
+  <div class="nav-right"><a href="#" class="btn btn-ghost">登录</a><a href="#" class="btn btn-gold">申请内测</a></div>
+</div></nav>
+
+<div class="wrap page-head">
+  <div class="label">// TEAM COLLABORATION</div>
+  <h1>团队协作</h1>
+  <p class="muted" style="font-size:15px">多人协作、审核流程、版本管理</p>
+</div>
+
+<div class="wrap workbench">
+  <!-- 左：内容列表 -->
+  <section>
+    <!-- 团队成员栏 -->
+    <div class="team-bar">
+      <div class="team-avatars">
+        <div class="team-avatar you">你</div>
+        <div class="team-avatar other">李</div>
+        <div class="team-avatar other">王</div>
+        <div class="team-avatar other">张</div>
+        <div class="team-avatar other">+3</div>
+      </div>
+      <div class="team-info">
+        <div class="n">运营小课堂团队</div>
+        <div class="m">7 人 · 3 人在线</div>
+      </div>
+      <button class="btn btn-ghost">邀请成员</button>
+    </div>
+
+    <!-- 内容列表 -->
+    <div class="content-list">
+      <div class="content-item active">
+        <div class="content-top">
+          <div class="content-title">新手做小红书第一个月涨粉1000的真实复盘</div>
+          <div class="content-status pending">待审核</div>
+        </div>
+        <div class="content-meta">
+          <span>小红书 · 图文</span>
+          <span>287字</span>
+          <span>2 小时前</span>
+        </div>
+        <div class="content-author">
+          <div class="avatar">李</div>
+          <span>李编辑 · 创作者</span>
+        </div>
+      </div>
+      <div class="content-item">
+        <div class="content-top">
+          <div class="content-title">AI 写真太火了！一键生成杂志封面</div>
+          <div class="content-status approved">已审核</div>
+        </div>
+        <div class="content-meta">
+          <span>抖音 · 视频</span>
+          <span>00:45</span>
+          <span>5 小时前</span>
+        </div>
+        <div class="content-author">
+          <div class="avatar">王</div>
+          <span>王剪辑 · 视频制作</span>
+        </div>
+      </div>
+      <div class="content-item">
+        <div class="content-top">
+          <div class="content-title">ChatGPT 新功能实测：能替代 90% 的文案工作？</div>
+          <div class="content-status published">已发布</div>
+        </div>
+        <div class="content-meta">
+          <span>公众号 · 长文</span>
+          <span>2100字</span>
+          <span>1 天前</span>
+        </div>
+        <div class="content-author">
+          <div class="avatar">张</div>
+          <span>张主编 · 内容总监</span>
+        </div>
+      </div>
+      <div class="content-item">
+        <div class="content-top">
+          <div class="content-title">秋冬护肤避雷：这 5 款网红产品千万别买</div>
+          <div class="content-status pending">待审核</div>
+        </div>
+        <div class="content-meta">
+          <span>抖音 · 口播</span>
+          <span>01:12</span>
+          <span>3 小时前</span>
+        </div>
+        <div class="content-author">
+          <div class="avatar">李</div>
+          <span>李编辑 · 创作者</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 右：详情面板 -->
+  <aside class="detail-panel">
+    <div class="detail-header">
+      <h3>内容详情</h3>
+      <div class="detail-status pending">待审核</div>
+    </div>
+
+    <div class="detail-section">
+      <h4>标题</h4>
+      <div style="font-size:15px;font-weight:500;margin-bottom:8px">新手做小红书第一个月涨粉1000的真实复盘</div>
+    </div>
+
+    <div class="detail-section">
+      <h4>平台</h4>
+      <div style="display:flex;gap:8px">
+        <span class="tag tag-gold">小红书</span>
+        <span class="tag">图文</span>
+      </div>
+    </div>
+
+    <div class="detail-section">
+      <h4>内容预览</h4>
+      <div class="detail-content">
+        姐妹们！！做小红书第一个月就涨了1000粉，今天把方法全分享出来👇<br><br>
+        1️⃣ 定位要窄：别想着什么都能发，选一个你能持续输出的细分领域<br>
+        2️⃣ 标题钩子：用数字+情绪+痛点，比如"0基础3天起号"<br>
+        3️⃣ 封面统一：形成视觉记忆点，刷到就知道是你...
+      </div>
+    </div>
+
+    <div class="detail-section">
+      <h4>创作者</h4>
+      <div class="content-author">
+        <div class="avatar" style="width:28px;height:28px;font-size:11px">李</div>
+        <div>
+          <div style="font-size:13px;font-weight:500">李编辑</div>
+          <div style="font-size:11px;color:var(--text-3)">创作者 · 2 小时前提交</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-section">
+      <h4>审核历史</h4>
+      <div class="history-list">
+        <div class="history-item">
+          <div class="dot comment"></div>
+          <div class="info">
+            <div class="n">李编辑 提交审核</div>
+            <div class="m">2 小时前</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-actions">
+      <button class="btn btn-gold" id="approveBtn">通过</button>
+      <button class="btn btn-ghost" id="rejectBtn">驳回</button>
+    </div>
+
+    <div style="margin-top:16px">
+      <textarea class="input" placeholder="添加审核意见..." style="min-height:80px;resize:vertical"></textarea>
+    </div>
+  </aside>
+</div>
+
+<footer><div class="wrap foot-inner">
+  <div class="brand" style="font-size:14px"><svg viewBox="0 0 32 32" class="logo" style="width:18px;height:18px" fill="#E8A33D"><path d="M16 3 L29 16 L16 16 Z"/><path d="M29 16 L16 29 L16 16 Z" opacity=".6"/><path d="M16 29 L3 16 L16 16 Z"/><path d="M3 16 L16 3 L16 16 Z" opacity=".6"/></svg> 自媒体创作平台</div>
+  <div class="mono">© 2026 · 团队协作</div>
+</div></footer>
+
+<script src="assets/demo.js"></script>
+<script>
+  // 内容列表点击切换
+  document.querySelectorAll('.content-item').forEach(item=>{
+    item.onclick=()=>{
+      document.querySelectorAll('.content-item').forEach(x=>x.classList.remove('active'));
+      item.classList.add('active');
+    };
+  });
+
+  // 审核按钮交互
+  const approveBtn=document.getElementById('approveBtn');
+  const rejectBtn=document.getElementById('rejectBtn');
+
+  approveBtn.addEventListener('click',()=>{
+    Demo.btnLoading(approveBtn,'审核中…');
+    setTimeout(()=>{
+      Demo.btnDone(approveBtn,'已通过 ✓');
+      approveBtn.disabled=true;
+      rejectBtn.style.display='none';
+      Demo.toast('内容已通过审核');
+    },1000);
+  });
+
+  rejectBtn.addEventListener('click',()=>{
+    Demo.btnLoading(rejectBtn,'处理中…');
+    setTimeout(()=>{
+      Demo.btnDone(rejectBtn,'已驳回');
+      rejectBtn.disabled=true;
+      approveBtn.style.display='none';
+      Demo.toast('内容已驳回', 'error');
+    },1000);
+  });
+</script>
+</body>
+</html>

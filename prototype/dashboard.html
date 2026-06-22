@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>数据看板 — 自媒体创作平台</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .page-head{padding:40px 0 24px}
+  .page-head h1{font-size:32px;margin-bottom:6px}
+
+  /* 核心指标卡片 */
+  .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
+  .kpi-card{
+    background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);
+    padding:22px;transition:var(--ease);
+  }
+  .kpi-card:hover{border-color:var(--border-2)}
+  .kpi-card .label{font-size:12px;color:var(--text-3);font-family:'Geist Mono',monospace;margin-bottom:8px}
+  .kpi-card .value{font-size:28px;font-weight:600;color:var(--gold);letter-spacing:-0.03em}
+  .kpi-card .change{font-size:12px;margin-top:8px;font-family:'Geist Mono',monospace}
+  .kpi-card .change.up{color:#4ade80}
+  .kpi-card .change.down{color:#f87171}
+
+  /* 平台对比 */
+  .sec-title{display:flex;align-items:center;gap:10px;margin:32px 0 16px}
+  .sec-title h2{font-size:18px}
+  .sec-title .ln{flex:1;height:1px;background:var(--border)}
+
+  /* 内容效果列表 */
+  .content-list{display:flex;flex-direction:column;gap:12px}
+  .content-item{
+    display:flex;align-items:center;gap:16px;background:var(--bg-2);
+    border:1px solid var(--border);border-radius:var(--radius);padding:18px 22px;
+    transition:var(--ease);cursor:pointer;
+  }
+  .content-item:hover{border-color:var(--border-2);background:var(--bg-3)}
+  .content-thumb{
+    width:60px;height:60px;border-radius:10px;background:linear-gradient(135deg,var(--gold-3),var(--bg-3));
+    display:flex;align-items:center;justify-content:center;color:var(--bg);font-weight:700;font-size:18px;flex-shrink:0;
+  }
+  .content-info{flex:1;min-width:0}
+  .content-info .t{font-size:14px;font-weight:500;margin-bottom:4px}
+  .content-info .m{font-size:12px;color:var(--text-3);font-family:'Geist Mono',monospace}
+  .content-stats{display:flex;gap:16px;font-size:12px;color:var(--text-3);font-family:'Geist Mono',monospace}
+  .content-stats .n{color:var(--gold);font-weight:500}
+  .content-badge{
+    font-size:11px;padding:3px 8px;border-radius:6px;font-weight:500;
+    border:1px solid;font-family:'Geist Mono',monospace;
+  }
+  .content-badge.hot{color:var(--gold);border-color:var(--gold-3);background:var(--glow-soft)}
+
+  /* 粉丝画像 */
+  .persona-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .persona-card{background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);padding:22px}
+  .persona-card h3{font-size:15px;margin-bottom:16px}
+  .persona-bar{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .persona-bar .label{font-size:12px;color:var(--text-3);min-width:50px}
+  .persona-bar .bar{flex:1;height:8px;background:var(--bg-3);border-radius:999px;overflow:hidden}
+  .persona-bar .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold-3),var(--gold-2));border-radius:999px}
+  .persona-bar .val{font-size:12px;color:var(--text-2);font-family:'Geist Mono',monospace;min-width:40px;text-align:right}
+
+  @media(max-width:900px){.kpi-grid{grid-template-columns:repeat(2,1fr)}.persona-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav class="nav"><div class="wrap nav-inner">
+  <a href="index.html" class="brand"><svg viewBox="0 0 32 32" class="logo" fill="none"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F5C669"/><stop offset="1" stop-color="#D4882E"/></linearGradient></defs><path d="M16 3 L29 16 L16 16 Z" fill="url(#lg)"/><path d="M29 16 L16 29 L16 16 Z" fill="url(#lg)" opacity=".6"/><path d="M16 29 L3 16 L16 16 Z" fill="url(#lg)"/><path d="M3 16 L16 3 L16 16 Z" fill="url(#lg)" opacity=".6"/></svg> 自媒体创作平台</a>
+  <div class="nav-links">
+    <a href="index.html">首页</a>
+    <div class="nav-item">
+      <a href="insight.html">洞察</a>
+      <div class="dropdown">
+        <a href="insight.html">热点洞察</a>
+        <a href="analyze.html">爆款拆解</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a href="create.html">创作</a>
+      <div class="dropdown">
+        <a href="create.html">创作工作台</a>
+        <a href="video.html">视频重生成</a>
+        <a href="optimize.html">标题优化</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a href="dashboard.html" class="active">数据</a>
+      <div class="dropdown">
+        <a href="dashboard.html" class="active">数据看板</a>
+        <a href="calendar.html">内容日历</a>
+        <a href="assets.html">素材库</a>
+        <a href="analysis.html">数据沉淀</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a href="team.html">团队</a>
+      <div class="dropdown">
+        <a href="team.html">团队协作</a>
+        <a href="publish.html">发布中心</a>
+      </div>
+    </div>
+  </div>
+  <div class="nav-right"><a href="#" class="btn btn-ghost">登录</a><a href="#" class="btn btn-gold">申请内测</a></div>
+</div></nav>
+
+<div class="wrap page-head">
+  <div class="label">// DATA DASHBOARD</div>
+  <h1>数据看板</h1>
+  <p class="muted" style="font-size:15px">全平台数据汇总，一眼看清内容效果</p>
+</div>
+
+<div class="wrap" style="padding-bottom:60px">
+  <!-- 核心指标 -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="label">总阅读量</div>
+      <div class="value" data-to="1284000">0</div>
+      <div class="change up">↑ 23.5% 较上周</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">总点赞数</div>
+      <div class="value" data-to="85600">0</div>
+      <div class="change up">↑ 18.2% 较上周</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">总粉丝数</div>
+      <div class="value" data-to="125800">0</div>
+      <div class="change up">↑ 5.8% 较上周</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">爆款率</div>
+      <div class="value" data-to="12" data-suffix="%">0</div>
+      <div class="change up">↑ 3.2% 较上周</div>
+    </div>
+  </div>
+
+  <!-- 平台对比 -->
+  <div class="sec-title"><h2>平台对比</h2><div class="ln"></div><span class="tag">近 7 天</span></div>
+  <div class="card" style="padding:24px">
+    <svg viewBox="0 0 600 200" style="width:100%;height:180px">
+      <!-- 网格 -->
+      <line x1="0" y1="50" x2="600" y2="50" stroke="var(--border)" stroke-width="1"/>
+      <line x1="0" y1="100" x2="600" y2="100" stroke="var(--border)" stroke-width="1"/>
+      <line x1="0" y1="150" x2="600" y2="150" stroke="var(--border)" stroke-width="1"/>
+      <!-- 柱状图 -->
+      <rect x="50" y="80" width="60" height="120" rx="4" fill="var(--gold)" opacity=".8"/>
+      <rect x="150" y="40" width="60" height="160" rx="4" fill="var(--gold)" opacity=".9"/>
+      <rect x="250" y="100" width="60" height="100" rx="4" fill="var(--gold)" opacity=".7"/>
+      <rect x="350" y="60" width="60" height="140" rx="4" fill="var(--gold)" opacity=".85"/>
+      <rect x="450" y="120" width="60" height="80" rx="4" fill="var(--gold)" opacity=".6"/>
+      <!-- 标签 -->
+      <text x="80" y="195" fill="var(--text-3)" font-size="11" text-anchor="middle">抖音</text>
+      <text x="180" y="195" fill="var(--text-3)" font-size="11" text-anchor="middle">小红书</text>
+      <text x="280" y="195" fill="var(--text-3)" font-size="11" text-anchor="middle">公众号</text>
+      <text x="380" y="195" fill="var(--text-3)" font-size="11" text-anchor="middle">B站</text>
+      <text x="480" y="195" fill="var(--text-3)" font-size="11" text-anchor="middle">微博</text>
+      <!-- 数值 -->
+      <text x="80" y="75" fill="var(--gold)" font-size="12" text-anchor="middle" font-weight="600">45.2w</text>
+      <text x="180" y="35" fill="var(--gold)" font-size="12" text-anchor="middle" font-weight="600">62.8w</text>
+      <text x="280" y="95" fill="var(--gold)" font-size="12" text-anchor="middle" font-weight="600">28.5w</text>
+      <text x="380" y="55" fill="var(--gold)" font-size="12" text-anchor="middle" font-weight="600">52.1w</text>
+      <text x="480" y="115" fill="var(--gold)" font-size="12" text-anchor="middle" font-weight="600">18.6w</text>
+    </svg>
+  </div>
+
+  <!-- 内容效果 -->
+  <div class="sec-title"><h2>内容效果 TOP 5</h2><div class="ln"></div><button class="icon-btn" style="border:1px solid var(--border-2);background:var(--bg-3);color:var(--text-2);border-radius:7px;padding:6px 12px;font-size:12px;cursor:pointer">查看全部</button></div>
+  <div class="content-list">
+    <div class="content-item">
+      <div class="content-thumb">爆</div>
+      <div class="content-info">
+        <div class="t">新手做小红书一个月涨粉1000的真实复盘（附模板）</div>
+        <div class="m">小红书 · 图文 · 3天前</div>
+      </div>
+      <div class="content-stats">
+        <span>阅读 <span class="n">12.8w</span></span>
+        <span>点赞 <span class="n">8600</span></span>
+        <span>收藏 <span class="n">2340</span></span>
+      </div>
+      <div class="content-badge hot">爆款</div>
+    </div>
+    <div class="content-item">
+      <div class="content-thumb">视</div>
+      <div class="content-info">
+        <div class="t">AI 写真太火了！一键生成杂志封面，小红书点赞破 10 万</div>
+        <div class="m">抖音 · 视频 · 5天前</div>
+      </div>
+      <div class="content-stats">
+        <span>播放 <span class="n">85.6w</span></span>
+        <span>点赞 <span class="n">5.2w</span></span>
+        <span>评论 <span class="n">3200</span></span>
+      </div>
+      <div class="content-badge hot">爆款</div>
+    </div>
+    <div class="content-item">
+      <div class="content-thumb">文</div>
+      <div class="content-info">
+        <div class="t">ChatGPT 新功能实测：能替代 90% 的文案工作？</div>
+        <div class="m">公众号 · 长文 · 7天前</div>
+      </div>
+      <div class="content-stats">
+        <span>阅读 <span class="n">2.8w</span></span>
+        <span>点赞 <span class="n">1200</span></span>
+        <span>在看 <span class="n">580</span></span>
+      </div>
+    </div>
+    <div class="content-item">
+      <div class="content-thumb">视</div>
+      <div class="content-info">
+        <div class="t">打工人早餐新宠：5 分钟搞定的高蛋白食谱</div>
+        <div class="m">小红书 · 视频 · 10天前</div>
+      </div>
+      <div class="content-stats">
+        <span>播放 <span class="n">15.2w</span></span>
+        <span>点赞 <span class="n">9800</span></span>
+        <span>收藏 <span class="n">4500</span></span>
+      </div>
+    </div>
+    <div class="content-item">
+      <div class="content-thumb">文</div>
+      <div class="content-info">
+        <div class="t">副业赚钱：靠小红书月入 2 万的真实复盘</div>
+        <div class="m">公众号 · 长文 · 14天前</div>
+      </div>
+      <div class="content-stats">
+        <span>阅读 <span class="n">1.5w</span></span>
+        <span>点赞 <span class="n">850</span></span>
+        <span>在看 <span class="n">320</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 粉丝画像 -->
+  <div class="sec-title"><h2>粉丝画像</h2><div class="ln"></div></div>
+  <div class="persona-grid">
+    <div class="persona-card">
+      <h3>年龄分布</h3>
+      <div class="persona-bar">
+        <div class="label">18-24</div>
+        <div class="bar"><i style="width:35%"></i></div>
+        <div class="val">35%</div>
+      </div>
+      <div class="persona-bar">
+        <div class="label">25-34</div>
+        <div class="bar"><i style="width:42%"></i></div>
+        <div class="val">42%</div>
+      </div>
+      <div class="persona-bar">
+        <div class="label">35-44</div>
+        <div class="bar"><i style="width:15%"></i></div>
+        <div class="val">15%</div>
+      </div>
+      <div class="persona-bar">
+        <div class="label">45+</div>
+        <div class="bar"><i style="width:8%"></i></div>
+        <div class="val">8%</div>
+      </div>
+    </div>
+    <div class="persona-card">
+      <h3>地域分布</h3>
+      <div class="persona-bar">
+        <div class="label">广东</div>
+        <div class="bar"><i style="width:18%"></i></div>
+        <div class="val">18%</div>
+      </div>
+      <div class="persona-bar">
+        <div class="label">浙江</div>
+        <div class="bar"><i style="width:12%"></i></div>
+        <div class="val">12%</div>
+      </div>
+      <div class="persona-bar">
+        <div class="label">上海</div>
+        <div class="bar"><i style="width:10%"></i></div>
+        <div class="val">10%</div>
+      </div>
+      <div class="persona-bar">
+        <div class="label">北京</div>
+        <div class="bar"><i style="width:9%"></i></div>
+        <div class="val">9%</div>
+      </div>
+    </div>
+    <div class="persona-card">
+      <h3>活跃时间</h3>
+      <div class="persona-bar">
+        <div class="label">早 8-10</div>
+        <div class="bar"><i style="width:25%"></i></div>
+        <div class="val">25%</div>
+      </div>
+      <div class="persona-bar">
+        <div class="label">午 12-14</div>
+        <div class="bar"><i style="width:20%"></i></div>
+        <div class="val">20%</div>
+      </div>
+      <div class="persona-bar">
+        <div class="label">晚 18-22</div>
+        <div class="bar"><i style="width:45%"></i></div>
+        <div class="val">45%</div>
+      </div>
+      <div class="persona-bar">
+        <div class="label">其他</div>
+        <div class="bar"><i style="width:10%"></i></div>
+        <div class="val">10%</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer><div class="wrap foot-inner">
+  <div class="brand" style="font-size:14px"><svg viewBox="0 0 32 32" class="logo" style="width:18px;height:18px" fill="#E8A33D"><path d="M16 3 L29 16 L16 16 Z"/><path d="M29 16 L16 29 L16 16 Z" opacity=".6"/><path d="M16 29 L3 16 L16 16 Z"/><path d="M3 16 L16 3 L16 16 Z" opacity=".6"/></svg> 自媒体创作平台</div>
+  <div class="mono">© 2026 · 数据看板</div>
+</div></footer>
+
+<script src="assets/demo.js"></script>
+<script>
+  // KPI 数字 count-up
+  const kpiValues=document.querySelectorAll('.kpi-card .value[data-to]');
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        Demo.countUp(e.target,parseInt(e.target.dataset.to));
+        io.unobserve(e.target);
+      }
+    });
+  },{threshold:.4});
+  kpiValues.forEach(c=>io.observe(c));
+</script>
+</body>
+</html>

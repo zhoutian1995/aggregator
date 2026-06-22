@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>数据沉淀 — 自媒体创作平台</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .page-head{padding:40px 0 24px}
+  .page-head h1{font-size:32px;margin-bottom:6px}
+
+  /* 核心指标 */
+  .kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px}
+  .kpi-card{
+    background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);
+    padding:22px;transition:var(--ease);
+  }
+  .kpi-card:hover{border-color:var(--border-2)}
+  .kpi-card .label{font-size:12px;color:var(--text-3);font-family:'Geist Mono',monospace;margin-bottom:8px}
+  .kpi-card .value{font-size:28px;font-weight:600;color:var(--gold);letter-spacing:-0.03em}
+  .kpi-card .change{font-size:12px;margin-top:8px;font-family:'Geist Mono',monospace}
+  .kpi-card .change.up{color:#4ade80}
+  .kpi-card .change.down{color:#f87171}
+
+  /* 区块标题 */
+  .sec-title{display:flex;align-items:center;gap:10px;margin:32px 0 16px}
+  .sec-title h2{font-size:18px}
+  .sec-title .ln{flex:1;height:1px;background:var(--border)}
+
+  /* 爆款分析 */
+  .insight-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  .insight-card{
+    background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);
+    padding:22px;transition:var(--ease);
+  }
+  .insight-card:hover{border-color:var(--border-2)}
+  .insight-card h3{font-size:15px;margin-bottom:12px}
+  .insight-list{display:flex;flex-direction:column;gap:8px}
+  .insight-item{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text-2)}
+  .insight-item .ico{font-size:14px}
+  .insight-item .val{margin-left:auto;color:var(--gold);font-weight:500;font-family:'Geist Mono',monospace}
+
+  /* AI 顾问 */
+  .advisor-card{
+    background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);
+    padding:24px;margin-bottom:16px;
+  }
+  .advisor-header{display:flex;align-items:center;gap:16px;margin-bottom:18px}
+  .advisor-avatar{
+    width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--gold-3),var(--gold));
+    display:flex;align-items:center;justify-content:center;color:var(--bg);font-size:20px;font-weight:700;
+  }
+  .advisor-info .n{font-size:16px;font-weight:500}
+  .advisor-info .m{font-size:12px;color:var(--text-3)}
+  .advisor-content{font-size:14px;color:var(--text-2);line-height:1.8}
+  .advisor-content .hl{color:var(--gold);background:var(--glow-soft);padding:1px 5px;border-radius:4px}
+
+  /* 创作偏好 */
+  .pref-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .pref-card{background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);padding:22px}
+  .pref-card h3{font-size:15px;margin-bottom:16px}
+  .pref-tag{display:inline-flex;align-items:center;font-size:12px;padding:5px 10px;border:1px solid var(--border-2);border-radius:6px;color:var(--text-2);margin:0 6px 6px 0}
+  .pref-tag.hot{color:var(--gold);border-color:var(--gold-3);background:var(--glow-soft)}
+
+  @media(max-width:900px){.kpi-grid{grid-template-columns:1fr}.insight-grid{grid-template-columns:1fr}.pref-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav class="nav"><div class="wrap nav-inner">
+  <a href="index.html" class="brand"><svg viewBox="0 0 32 32" class="logo" fill="none"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F5C669"/><stop offset="1" stop-color="#D4882E"/></linearGradient></defs><path d="M16 3 L29 16 L16 16 Z" fill="url(#lg)"/><path d="M29 16 L16 29 L16 16 Z" fill="url(#lg)" opacity=".6"/><path d="M16 29 L3 16 L16 16 Z" fill="url(#lg)"/><path d="M3 16 L16 3 L16 16 Z" fill="url(#lg)" opacity=".6"/></svg> 自媒体创作平台</a>
+  <div class="nav-links">
+    <a href="index.html">首页</a>
+    <div class="nav-item">
+      <a href="insight.html">洞察</a>
+      <div class="dropdown">
+        <a href="insight.html">热点洞察</a>
+        <a href="analyze.html">爆款拆解</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a href="create.html">创作</a>
+      <div class="dropdown">
+        <a href="create.html">创作工作台</a>
+        <a href="video.html">视频重生成</a>
+        <a href="optimize.html">标题优化</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a href="dashboard.html" class="active">数据</a>
+      <div class="dropdown">
+        <a href="dashboard.html">数据看板</a>
+        <a href="calendar.html">内容日历</a>
+        <a href="assets.html">素材库</a>
+        <a href="analysis.html" class="active">数据沉淀</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a href="team.html">团队</a>
+      <div class="dropdown">
+        <a href="team.html">团队协作</a>
+        <a href="publish.html">发布中心</a>
+      </div>
+    </div>
+  </div>
+  <div class="nav-right"><a href="#" class="btn btn-ghost">登录</a><a href="#" class="btn btn-gold">申请内测</a></div>
+</div></nav>
+
+<div class="wrap page-head">
+  <div class="label">// DATA PRECIPITATION</div>
+  <h1>数据沉淀</h1>
+  <p class="muted" style="font-size:15px">越用越懂你，基于你的数据给出个性化建议</p>
+</div>
+
+<div class="wrap" style="padding-bottom:60px">
+  <!-- 核心指标 -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="label">我的爆款率</div>
+      <div class="value" data-to="12" data-suffix="%">0</div>
+      <div class="change up">↑ 3.2% 较上月</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">平均阅读量</div>
+      <div class="value" data-to="8500">0</div>
+      <div class="change up">↑ 15.8% 较上月</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">粉丝增长率</div>
+      <div class="value" data-to="5" data-suffix="%">0</div>
+      <div class="change up">↑ 1.2% 较上月</div>
+    </div>
+  </div>
+
+  <!-- 我的爆款分析 -->
+  <div class="sec-title"><h2>我的爆款分析</h2><div class="ln"></div><span class="tag tag-gold">基于 28 条爆款</span></div>
+  <div class="insight-grid">
+    <div class="insight-card">
+      <h3>📊 爆款共同特征</h3>
+      <div class="insight-list">
+        <div class="insight-item">
+          <span class="ico">✓</span>
+          <span>标题含数字</span>
+          <span class="val">82%</span>
+        </div>
+        <div class="insight-item">
+          <span class="ico">✓</span>
+          <span>开头有痛点共鸣</span>
+          <span class="val">75%</span>
+        </div>
+        <div class="insight-item">
+          <span class="ico">✓</span>
+          <span>结尾有行动号召</span>
+          <span class="val">68%</span>
+        </div>
+        <div class="insight-item">
+          <span class="ico">✓</span>
+          <span>内容有实操步骤</span>
+          <span class="val">71%</span>
+        </div>
+      </div>
+    </div>
+    <div class="insight-card">
+      <h3>⏰ 最佳发布时间</h3>
+      <div class="insight-list">
+        <div class="insight-item">
+          <span class="ico">🕐</span>
+          <span>小红书</span>
+          <span class="val">10:00</span>
+        </div>
+        <div class="insight-item">
+          <span class="ico">🕐</span>
+          <span>抖音</span>
+          <span class="val">18:00-20:00</span>
+        </div>
+        <div class="insight-item">
+          <span class="ico">🕐</span>
+          <span>公众号</span>
+          <span class="val">20:00-22:00</span>
+        </div>
+        <div class="insight-item">
+          <span class="ico">🕐</span>
+          <span>B站</span>
+          <span class="val">12:00-14:00</span>
+        </div>
+      </div>
+    </div>
+    <div class="insight-card">
+      <h3>🏷️ 高互动标签</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">
+        <span class="pref-tag hot">#小红书运营</span>
+        <span class="pref-tag hot">#涨粉攻略</span>
+        <span class="pref-tag hot">#新手起号</span>
+        <span class="pref-tag">#自媒体干货</span>
+        <span class="pref-tag">#AI工具</span>
+        <span class="pref-tag hot">#副业赚钱</span>
+        <span class="pref-tag">#内容创作</span>
+      </div>
+    </div>
+    <div class="insight-card">
+      <h3>📈 内容类型效果</h3>
+      <div class="insight-list">
+        <div class="insight-item">
+          <span class="ico">📝</span>
+          <span>教程/攻略类</span>
+          <span class="val">爆款率 18%</span>
+        </div>
+        <div class="insight-item">
+          <span class="ico">💬</span>
+          <span>真实复盘类</span>
+          <span class="val">爆款率 15%</span>
+        </div>
+        <div class="insight-item">
+          <span class="ico">🔥</span>
+          <span>热点解读类</span>
+          <span class="val">爆款率 12%</span>
+        </div>
+        <div class="insight-item">
+          <span class="ico">📦</span>
+          <span>好物推荐类</span>
+          <span class="val">爆款率 10%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI 内容顾问 -->
+  <div class="sec-title"><h2>AI 内容顾问</h2><div class="ln"></div></div>
+  <div class="advisor-card">
+    <div class="advisor-header">
+      <div class="advisor-avatar">AI</div>
+      <div class="advisor-info">
+        <div class="n">你的专属内容顾问</div>
+        <div class="m">基于你的 128 条内容数据训练</div>
+      </div>
+    </div>
+    <div class="advisor-content">
+      <p style="margin-bottom:12px">📊 根据你的内容数据分析，我发现：</p>
+      <p style="margin-bottom:8px">1. 你的<span class="hl">教程/攻略类</span>内容爆款率最高（18%），建议增加这类内容的产出比例。</p>
+      <p style="margin-bottom:8px">2. 你的标题风格偏「理性」，加入<span class="hl">情绪词</span>后点击率提升 25%，建议多用「真实」「保姆级」「震惊」等词。</p>
+      <p style="margin-bottom:8px">3. 你的粉丝活跃时间集中在<span class="hl">晚上 18:00-22:00</span>，建议在这个时间段发布。</p>
+      <p>4. 你的<span class="hl">小红书</span>内容效果最好，建议作为主攻平台，其他平台做差异化分发。</p>
+    </div>
+  </div>
+
+  <div style="text-align:center;padding:20px 0">
+    <a href="create.html" class="btn btn-gold btn-lg">基于分析一键创作 →</a>
+  </div>
+
+  <!-- 创作偏好 -->
+  <div class="sec-title"><h2>创作偏好</h2><div class="ln"></div><span class="tag">已学习</span></div>
+  <div class="pref-grid">
+    <div class="pref-card">
+      <h3>🎯 常用风格</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">
+        <span class="pref-tag hot">活泼种草</span>
+        <span class="pref-tag">专业干货</span>
+        <span class="pref-tag">故事叙述</span>
+        <span class="pref-tag">轻松幽默</span>
+      </div>
+    </div>
+    <div class="pref-card">
+      <h3>📐 常用结构</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">
+        <span class="pref-tag hot">总分总</span>
+        <span class="pref-tag">问题-方案</span>
+        <span class="pref-tag hot">步骤清单</span>
+        <span class="pref-tag">故事-教训</span>
+      </div>
+    </div>
+    <div class="pref-card">
+      <h3>🏷️ 常用标签</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">
+        <span class="pref-tag hot">#小红书运营</span>
+        <span class="pref-tag hot">#涨粉攻略</span>
+        <span class="pref-tag">#AI工具</span>
+        <span class="pref-tag hot">#副业赚钱</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer><div class="wrap foot-inner">
+  <div class="brand" style="font-size:14px"><svg viewBox="0 0 32 32" class="logo" style="width:18px;height:18px" fill="#E8A33D"><path d="M16 3 L29 16 L16 16 Z"/><path d="M29 16 L16 29 L16 16 Z" opacity=".6"/><path d="M16 29 L3 16 L16 16 Z"/><path d="M3 16 L16 3 L16 16 Z" opacity=".6"/></svg> 自媒体创作平台</div>
+  <div class="mono">© 2026 · 数据沉淀</div>
+</div></footer>
+
+<script src="assets/demo.js"></script>
+<script>
+  // KPI 数字 count-up
+  const kpiValues=document.querySelectorAll('.kpi-card .value[data-to]');
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        Demo.countUp(e.target,parseInt(e.target.dataset.to));
+        io.unobserve(e.target);
+      }
+    });
+  },{threshold:.4});
+  kpiValues.forEach(c=>io.observe(c));
+</script>
+</body>
+</html>

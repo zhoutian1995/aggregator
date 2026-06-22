@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>素材库 — 自媒体创作平台</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .page-head{padding:40px 0 24px}
+  .page-head h1{font-size:32px;margin-bottom:6px}
+  .workbench{display:grid;grid-template-columns:220px 1fr;gap:24px;padding-bottom:60px;align-items:start}
+
+  /* 搜索栏 */
+  .search-bar{display:flex;gap:12px;margin-bottom:24px}
+  .search-bar .input{flex:1}
+
+  /* 左分类树 */
+  .cat-tree{background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;position:sticky;top:88px}
+  .cat-item{
+    display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;
+    cursor:pointer;transition:var(--ease);font-size:14px;color:var(--text-2);
+  }
+  .cat-item:hover{background:var(--bg-3);color:var(--text)}
+  .cat-item.active{background:var(--glow-soft);color:var(--gold)}
+  .cat-item .ico{font-size:16px}
+  .cat-item .count{margin-left:auto;font-size:11px;color:var(--text-3);font-family:'Geist Mono',monospace}
+
+  /* 素材网格 */
+  .asset-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  .asset-card{
+    background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);
+    overflow:hidden;transition:var(--ease);cursor:pointer;
+  }
+  .asset-card:hover{border-color:var(--border-2);transform:translateY(-2px)}
+  .asset-thumb{
+    height:140px;background:linear-gradient(135deg,var(--gold-3),var(--bg-3));
+    display:flex;align-items:center;justify-content:center;color:var(--bg);font-size:32px;
+  }
+  .asset-thumb.img{background:linear-gradient(135deg,#3b82f6,#1d4ed8)}
+  .asset-thumb.video{background:linear-gradient(135deg,#ef4444,#b91c1c)}
+  .asset-thumb.music{background:linear-gradient(135deg,#8b5cf6,#6d28d9)}
+  .asset-thumb.template{background:linear-gradient(135deg,var(--gold-3),var(--gold))}
+  .asset-info{padding:14px}
+  .asset-info .t{font-size:13px;font-weight:500;margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .asset-info .m{font-size:11px;color:var(--text-3);font-family:'Geist Mono',monospace}
+  .asset-tags{display:flex;gap:4px;margin-top:10px;flex-wrap:wrap}
+  .asset-tag{font-size:10px;padding:2px 6px;border:1px solid var(--border-2);border-radius:4px;color:var(--text-3)}
+
+  @media(max-width:900px){.workbench{grid-template-columns:1fr}.cat-tree{position:static}.asset-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+
+<nav class="nav"><div class="wrap nav-inner">
+  <a href="index.html" class="brand"><svg viewBox="0 0 32 32" class="logo" fill="none"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F5C669"/><stop offset="1" stop-color="#D4882E"/></linearGradient></defs><path d="M16 3 L29 16 L16 16 Z" fill="url(#lg)"/><path d="M29 16 L16 29 L16 16 Z" fill="url(#lg)" opacity=".6"/><path d="M16 29 L3 16 L16 16 Z" fill="url(#lg)"/><path d="M3 16 L16 3 L16 16 Z" fill="url(#lg)" opacity=".6"/></svg> 自媒体创作平台</a>
+  <div class="nav-links">
+    <a href="index.html">首页</a>
+    <div class="nav-item">
+      <a href="insight.html">洞察</a>
+      <div class="dropdown">
+        <a href="insight.html">热点洞察</a>
+        <a href="analyze.html">爆款拆解</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a href="create.html">创作</a>
+      <div class="dropdown">
+        <a href="create.html">创作工作台</a>
+        <a href="video.html">视频重生成</a>
+        <a href="optimize.html">标题优化</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a href="dashboard.html" class="active">数据</a>
+      <div class="dropdown">
+        <a href="dashboard.html">数据看板</a>
+        <a href="calendar.html">内容日历</a>
+        <a href="assets.html" class="active">素材库</a>
+        <a href="analysis.html">数据沉淀</a>
+      </div>
+    </div>
+    <div class="nav-item">
+      <a href="team.html">团队</a>
+      <div class="dropdown">
+        <a href="team.html">团队协作</a>
+        <a href="publish.html">发布中心</a>
+      </div>
+    </div>
+  </div>
+  <div class="nav-right"><a href="#" class="btn btn-ghost">登录</a><a href="#" class="btn btn-gold">申请内测</a></div>
+</div></nav>
+
+<div class="wrap page-head">
+  <div class="label">// ASSET LIBRARY</div>
+  <h1>素材库</h1>
+  <p class="muted" style="font-size:15px">云端素材管理，快速找到可用素材</p>
+</div>
+
+<div class="wrap workbench">
+  <!-- 左：分类树 -->
+  <aside class="cat-tree">
+    <div class="cat-item active">
+      <span class="ico">📁</span>
+      <span>全部素材</span>
+      <span class="count">128</span>
+    </div>
+    <div class="cat-item">
+      <span class="ico">🖼️</span>
+      <span>图片</span>
+      <span class="count">56</span>
+    </div>
+    <div class="cat-item">
+      <span class="ico">🎬</span>
+      <span>视频</span>
+      <span class="count">32</span>
+    </div>
+    <div class="cat-item">
+      <span class="ico">🎵</span>
+      <span>音乐</span>
+      <span class="count">24</span>
+    </div>
+    <div class="cat-item">
+      <span class="ico">📄</span>
+      <span>模板</span>
+      <span class="count">16</span>
+    </div>
+    <div class="cat-item">
+      <span class="ico">⭐</span>
+      <span>收藏</span>
+      <span class="count">18</span>
+    </div>
+    <div class="cat-item">
+      <span class="ico">🕐</span>
+      <span>最近使用</span>
+      <span class="count">12</span>
+    </div>
+  </aside>
+
+  <!-- 右：素材内容 -->
+  <section>
+    <!-- 搜索栏 -->
+    <div class="search-bar">
+      <input class="input" placeholder="搜索素材...">
+      <button class="btn btn-gold">上传素材</button>
+    </div>
+
+    <!-- 筛选标签 -->
+    <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap">
+      <span class="tag" style="cursor:pointer">全部</span>
+      <span class="tag tag-gold" style="cursor:pointer">小红书</span>
+      <span class="tag" style="cursor:pointer">抖音</span>
+      <span class="tag" style="cursor:pointer">公众号</span>
+      <span class="tag" style="cursor:pointer">B站</span>
+    </div>
+
+    <!-- 素材网格 -->
+    <div class="asset-grid">
+      <div class="asset-card">
+        <div class="asset-thumb img">🖼️</div>
+        <div class="asset-info">
+          <div class="t">小红书封面模板 - 美妆系列</div>
+          <div class="m">PNG · 2.4MB · 1080×1440</div>
+          <div class="asset-tags">
+            <span class="asset-tag">小红书</span>
+            <span class="asset-tag">封面</span>
+            <span class="asset-tag">美妆</span>
+          </div>
+        </div>
+      </div>
+      <div class="asset-card">
+        <div class="asset-thumb video">🎬</div>
+        <div class="asset-info">
+          <div class="t">咖啡探店原片 - 暖光风格</div>
+          <div class="m">MP4 · 38MB · 00:42</div>
+          <div class="asset-tags">
+            <span class="asset-tag">抖音</span>
+            <span class="asset-tag">探店</span>
+            <span class="asset-tag">咖啡</span>
+          </div>
+        </div>
+      </div>
+      <div class="asset-card">
+        <div class="asset-thumb music">🎵</div>
+        <div class="asset-info">
+          <div class="t">轻快背景音乐 - Vlog 常用</div>
+          <div class="m">MP3 · 4.8MB · 02:30</div>
+          <div class="asset-tags">
+            <span class="asset-tag">BGM</span>
+            <span class="asset-tag">轻快</span>
+            <span class="asset-tag">Vlog</span>
+          </div>
+        </div>
+      </div>
+      <div class="asset-card">
+        <div class="asset-thumb template">📄</div>
+        <div class="asset-info">
+          <div class="t">爆款标题公式模板</div>
+          <div class="m">TXT · 12KB · 15 个公式</div>
+          <div class="asset-tags">
+            <span class="asset-tag">模板</span>
+            <span class="asset-tag">标题</span>
+            <span class="asset-tag">公式</span>
+          </div>
+        </div>
+      </div>
+      <div class="asset-card">
+        <div class="asset-thumb img">🖼️</div>
+        <div class="asset-info">
+          <div class="t">美食摄影素材 - 日系风格</div>
+          <div class="m">JPG · 3.2MB · 1200×800</div>
+          <div class="asset-tags">
+            <span class="asset-tag">美食</span>
+            <span class="asset-tag">日系</span>
+            <span class="asset-tag">摄影</span>
+          </div>
+        </div>
+      </div>
+      <div class="asset-card">
+        <div class="asset-thumb video">🎬</div>
+        <div class="asset-info">
+          <div class="t">产品展示模板 - 快节奏剪辑</div>
+          <div class="m">MP4 · 25MB · 00:30</div>
+          <div class="asset-tags">
+            <span class="asset-tag">模板</span>
+            <span class="asset-tag">产品</span>
+            <span class="asset-tag">快剪</span>
+          </div>
+        </div>
+      </div>
+      <div class="asset-card">
+        <div class="asset-thumb img">🖼️</div>
+        <div class="asset-info">
+          <div class="t">穿搭封面 - 秋冬美拉德色系</div>
+          <div class="m">PNG · 1.8MB · 1080×1440</div>
+          <div class="asset-tags">
+            <span class="asset-tag">穿搭</span>
+            <span class="asset-tag">封面</span>
+            <span class="asset-tag">秋冬</span>
+          </div>
+        </div>
+      </div>
+      <div class="asset-card">
+        <div class="asset-thumb music">🎵</div>
+        <div class="asset-info">
+          <div class="t">治愈系钢琴曲 - 适合情感类</div>
+          <div class="m">MP3 · 5.2MB · 03:15</div>
+          <div class="asset-tags">
+            <span class="asset-tag">BGM</span>
+            <span class="asset-tag">治愈</span>
+            <span class="asset-tag">钢琴</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer><div class="wrap foot-inner">
+  <div class="brand" style="font-size:14px"><svg viewBox="0 0 32 32" class="logo" style="width:18px;height:18px" fill="#E8A33D"><path d="M16 3 L29 16 L16 16 Z"/><path d="M29 16 L16 29 L16 16 Z" opacity=".6"/><path d="M16 29 L3 16 L16 16 Z"/><path d="M3 16 L16 3 L16 16 Z" opacity=".6"/></svg> 自媒体创作平台</div>
+  <div class="mono">© 2026 · 素材库</div>
+</div></footer>
+
+<script src="assets/demo.js"></script>
+<script>
+  document.querySelectorAll('.cat-item').forEach(c=>c.onclick=()=>{
+    document.querySelectorAll('.cat-item').forEach(x=>x.classList.remove('active'));
+    c.classList.add('active');
+  });
+</script>
+</body>
+</html>
