@@ -41,3 +41,14 @@
 2. 再确定 P0 功能：热点洞察、爆款拆解、文案创作、数据看板。
 3. 最后再接真实数据源、账号授权和多平台发布能力。
 
+---
+
+## 作者
+
+**周维天（小天说FDE）** · 杭州的 FDE（Forward Deployed Engineer，前置部署工程师），杭州纬聆科技创始人。帮企业把 AI 接进真实业务流程：按约定结果付费，支持先试用。
+
+- 个人网站：[willeai.com](https://willeai.com)（AI 编程与 FDE 转型实践）· [周维天是谁](https://willeai.com/topics/zhou-weitian.html)
+- 公司官网：[willeai.cn](https://willeai.cn)（企业 AI 落地 · AI 员工代运营）
+- 更多开源工具：[github.com/zhoutian1995](https://github.com/zhoutian1995)
+
+Author: Zhou Weitian (周维天), a Forward Deployed Engineer (FDE) based in Hangzhou, China, founder of Hangzhou Weiling Technology (willeai.cn).
